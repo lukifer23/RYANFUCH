@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    android:padding="32dp">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:text="@string/game_title"
+        android:textColor="@android:color/white"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        android:shadowColor="@android:color/black"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="5" />
+
+    <!-- Subtitle -->
+    <TextView
+        android:id="@+id/subtitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titleText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/touch_to_start"
+        android:textColor="@android:color/gray"
+        android:textSize="18sp" />
+
+    <!-- Game Mode Buttons Container -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <!-- Easy Mode -->
+        <Button
+            android:id="@+id/easyButton"
+            style="@style/GameButton"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="@string/easy_mode"
+            android:background="@drawable/button_background" />
+
+        <!-- Normal Mode -->
+        <Button
+            android:id="@+id/normalButton"
+            style="@style/GameButton"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="@string/normal_mode"
+            android:background="@drawable/button_background" />
+
+        <!-- Hard Mode -->
+        <Button
+            android:id="@+id/hardButton"
+            style="@style/GameButton"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="@string/hard_mode"
+            android:background="@drawable/button_background" />
+
+        <!-- God Mode -->
+        <Button
+            android:id="@+id/godButton"
+            style="@style/GameButton"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="@string/god_mode"
+            android:background="@drawable/button_background" />
+
+    </LinearLayout>
+
+    <!-- Instructions -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/drag_to_aim"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:shadowColor="@android:color/black"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tap_to_shoot"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:shadowColor="@android:color/black"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/double_tap_reload"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:shadowColor="@android:color/black"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2" />
+
+    </LinearLayout>
+
+</RelativeLayout>
