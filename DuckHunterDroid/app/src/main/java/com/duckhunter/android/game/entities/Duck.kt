@@ -37,6 +37,7 @@ class Duck(private val context: Context, startX: Float, startY: Float) {
     private var duckType = DuckType.values().random()
 
     // Visual properties
+    private var texture: Texture? = null
     private var size = Vector2(64f, 48f) // Duck sprite size
     private var rotation = 0f
 
@@ -48,6 +49,10 @@ class Duck(private val context: Context, startX: Float, startY: Float) {
 
     val pointValue: Int
         get() = duckType.pointValue
+
+    init {
+        texture = Texture.createSolidColor(context, 1, 1, 1f, 1f, 1f)
+    }
 
     fun update(deltaTime: Float) {
         if (!isActive) return
@@ -125,32 +130,38 @@ class Duck(private val context: Context, startX: Float, startY: Float) {
     }
 
     private fun renderFlying(spriteBatch: SpriteBatch) {
-        // Simple colored rectangle for now
-        val color = when (duckType) {
-            DuckType.COMMON -> floatArrayOf(0.55f, 0.27f, 0.07f, 1f) // Brown
-            DuckType.RARE -> floatArrayOf(0.5f, 0.5f, 0.5f, 1f) // Gray
-            DuckType.GOLDEN -> floatArrayOf(1f, 0.84f, 0f, 1f) // Gold
-            DuckType.BOSS -> floatArrayOf(0f, 0.39f, 0f, 1f) // Green
+        texture?.let {
+            // Simple colored rectangle for now
+            val color = when (duckType) {
+                DuckType.COMMON -> floatArrayOf(0.55f, 0.27f, 0.07f, 1f) // Brown
+                DuckType.RARE -> floatArrayOf(0.5f, 0.5f, 0.5f, 1f) // Gray
+                DuckType.GOLDEN -> floatArrayOf(1f, 0.84f, 0f, 1f) // Gold
+                DuckType.BOSS -> floatArrayOf(0f, 0.39f, 0f, 1f) // Green
+            }
+
+            // Wing flapping effect
+            val wingOffset = if (currentFrame == 0) 0f else 8f
+
+            // Draw duck body
+            spriteBatch.setColor(color[0], color[1], color[2], color[3])
+            spriteBatch.draw(it, position.x, position.y, size.x, size.y)
         }
-
-        // Wing flapping effect
-        val wingOffset = if (currentFrame == 0) 0f else 8f
-
-        // Draw duck body
-        spriteBatch.setColor(color[0], color[1], color[2], color[3])
-        // Note: This would use actual texture in full implementation
-        // For demo, we'll skip actual rendering until textures are implemented
     }
 
     private fun renderFalling(spriteBatch: SpriteBatch) {
-        // Falling duck (rotated, X eyes)
-        spriteBatch.setColor(0.8f, 0.8f, 0.8f, 1f)
-        // Add X eyes effect for dead duck
+        texture?.let {
+            // Falling duck (rotated, X eyes)
+            spriteBatch.setColor(0.8f, 0.8f, 0.8f, 1f)
+            spriteBatch.draw(it, position.x, position.y, size.x, size.y)
+        }
     }
 
     private fun renderDead(spriteBatch: SpriteBatch) {
-        // Dead duck on ground
-        spriteBatch.setColor(0.4f, 0.4f, 0.4f, 1f)
+        texture?.let {
+            // Dead duck on ground
+            spriteBatch.setColor(0.4f, 0.4f, 0.4f, 1f)
+            spriteBatch.draw(it, position.x, position.y, size.x, size.y)
+        }
     }
 
     fun hit() {

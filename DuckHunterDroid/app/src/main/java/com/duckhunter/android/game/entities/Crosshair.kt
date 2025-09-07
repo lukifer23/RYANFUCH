@@ -1,9 +1,11 @@
 package com.duckhunter.android.game.entities
 
 import com.duckhunter.android.game.core.graphics.SpriteBatch
+import com.duckhunter.android.game.core.graphics.Texture
 import com.duckhunter.android.game.core.graphics.Vector2
+import android.content.Context
 
-class Crosshair {
+class Crosshair(private val context: Context) {
 
     // Position
     private var position = Vector2(960f, 540f) // Center of screen initially
@@ -22,6 +24,12 @@ class Crosshair {
     // Colors
     private val normalColor = floatArrayOf(1f, 1f, 1f, 1f) // White
     private val hitColor = floatArrayOf(1f, 0.5f, 0f, 1f) // Orange/red
+
+    private var texture: Texture? = null
+
+    init {
+        texture = Texture.createSolidColor(context, 1, 1, 1f, 1f, 1f)
+    }
 
     fun update(deltaTime: Float) {
         // Smooth movement towards target position
@@ -54,29 +62,20 @@ class Crosshair {
     }
 
     private fun renderCrosshairGeometry(spriteBatch: SpriteBatch) {
-        val scaledSize = Vector2(size.x * scale, size.y * scale)
-        val halfWidth = scaledSize.x / 2f
-        val halfHeight = scaledSize.y / 2f
+        texture?.let {
+            val scaledSize = Vector2(size.x * scale, size.y * scale)
+            val halfWidth = scaledSize.x / 2f
+            val halfHeight = scaledSize.y / 2f
 
-        // Render hit radius circle (semi-transparent)
-        spriteBatch.setColor(1f, 1f, 1f, 0.3f * alpha)
-        // Circle rendering would be implemented with geometry shader or multiple quads
+            // Render hit radius circle (semi-transparent)
+            spriteBatch.setColor(1f, 1f, 1f, 0.3f * alpha)
+            // Circle rendering would be implemented with geometry shader or multiple quads
 
-        // Reset to main color
-        val currentColor = if (hitEffectTime > 0f) hitColor else normalColor
-        spriteBatch.setColor(currentColor[0], currentColor[1], currentColor[2], currentColor[3] * alpha)
-
-        // Render cross lines
-        val lineThickness = 2f * scale
-        val lineLength = 15f * scale
-
-        // Horizontal line
-        // Top
-        // Vertical line
-        // Left
-
-        // Center dot
-        val dotSize = 6f * scale
+            // Reset to main color
+            val currentColor = if (hitEffectTime > 0f) hitColor else normalColor
+            spriteBatch.setColor(currentColor[0], currentColor[1], currentColor[2], currentColor[3] * alpha)
+            spriteBatch.draw(it, position.x - halfWidth, position.y - halfHeight, scaledSize.x, scaledSize.y)
+        }
     }
 
     fun setPosition(x: Float, y: Float) {

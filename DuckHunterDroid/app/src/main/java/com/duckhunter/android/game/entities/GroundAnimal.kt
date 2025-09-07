@@ -22,6 +22,9 @@ class GroundAnimal(private val context: Context, val animalType: AnimalType, sta
     private var isActive = true
     private var hitTime = 0f
 
+    // Visuals
+    private var texture: Texture? = null
+
     // Size based on animal type
     private var size = when (animalType) {
         AnimalType.RABBIT -> Vector2(32f, 24f)
@@ -47,6 +50,10 @@ class GroundAnimal(private val context: Context, val animalType: AnimalType, sta
 
     val pointValue: Int
         get() = animalType.pointValue
+
+    init {
+        texture = Texture.createSolidColor(context, 1, 1, 1f, 1f, 1f)
+    }
 
     fun update(deltaTime: Float) {
         if (!isActive) return
@@ -130,7 +137,9 @@ class GroundAnimal(private val context: Context, val animalType: AnimalType, sta
 
         // Render as colored rectangle for now
         // In full implementation, would use actual texture atlas
-        // spriteBatch.draw(texture, position.x + walkOffset, position.y, size.x, size.y)
+        texture?.let {
+            spriteBatch.draw(it, position.x + walkOffset, position.y, size.x, size.y)
+        }
     }
 
     fun hit() {

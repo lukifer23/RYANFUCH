@@ -108,6 +108,9 @@ class GameActivity : AppCompatActivity() {
             setContentView(glSurfaceView)
             Log.i(TAG, "OpenGL surface initialized successfully")
 
+            // Start the game engine
+            gameEngine.startGame()
+
         } catch (e: Exception) {
             Log.e(TAG, "Error initializing OpenGL", e)
             runOnUiThread {

@@ -45,7 +45,7 @@ class GameEngine(private val context: Context, private val gameMode: GameMode) {
             Log.d(TAG, "✓ Player created successfully: ${player.score} score, ${player.lives} lives")
 
             Log.d(TAG, "Step 2: Creating crosshair...")
-            crosshair = Crosshair()
+            crosshair = Crosshair(context)
             Log.d(TAG, "✓ Crosshair created successfully")
 
             Log.d(TAG, "Step 3: Creating test game objects...")

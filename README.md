@@ -1,65 +1,65 @@
-# 🦆 Duck Hunter Game
+# Duck Hunter Game
 
 A modern, feature-rich duck hunting game with multi-platform support. Experience the thrill of hunting with multiple game modes, animated targets, and native performance across platforms!
 
-## 📱 **Multi-Platform Support**
+## Multi-Platform Support
 
-### **🐍 Python (Original)**
-- **Status**: ✅ Fully Functional
+### Python (Original)
+- **Status**: Fully Functional
 - **Platform**: Windows/macOS/Linux
 - **Tech Stack**: Python 3.10+, Pygame-CE 2.5.5
 - **Features**: Complete game with all mechanics
 
-### **🍎 iOS Port**
-- **Status**: ✅ Fully Ported
+### iOS Port
+- **Status**: Fully Ported
 - **Platform**: iOS 15.0+
 - **Tech Stack**: Swift 5.9, SpriteKit, AVAudioEngine
 - **Features**: Native touch controls, optimized performance
 
-### **🤖 Android Port**
-- **Status**: 🚧 In Development (Black Screen Issue)
+### Android Port
+- **Status**: In Development (Black Screen Issue)
 - **Platform**: Android 8.0+
 - **Tech Stack**: Kotlin 1.9, OpenGL ES 3.0, OpenSL ES
 - **Features**: Hardware acceleration, touch-optimized
 
-## 🎮 Features
+## Features
 
-### 🎯 **Multiple Game Modes**
+### Multiple Game Modes
 - **Easy Mode**: 10 lives, 15 ammo - Perfect for beginners
 - **Normal Mode**: 3 lives, 8 ammo - Balanced challenge
 - **Hard Mode**: 1 life, 5 ammo - Hardcore difficulty
 - **God Mode**: ∞ lives, ∞ ammo - Pure fun mode (5-minute time limit)
 
-### 🦆 **Diverse Targets**
+### Diverse Targets
 - **Flying Ducks**: Common (100 pts), Rare (500 pts), Golden (1000 pts), Boss (2000 pts)
 - **Ground Animals**: 
-  - 🐰 Rabbit (150 pts) - Fast and small
-  - 🦌 Deer (200 pts) - Medium speed with antlers
-  - 🐺 Wolf (600 pts) - Quick and cunning
-  - 🐻 Bear (800 pts) - Slow but valuable
-  - 🦕 Dinosaur (1000 pts) - Rare and menacing
+  - Rabbit (150 pts) - Fast and small
+  - Deer (200 pts) - Medium speed with antlers
+  - Wolf (600 pts) - Quick and cunning
+  - Bear (800 pts) - Slow but valuable
+  - Dinosaur (1000 pts) - Rare and menacing
 
-### 🎨 **Enhanced Graphics**
+### Enhanced Graphics
 - **Animated Animals**: Walking cycles and realistic movement
 - **Detailed Sprites**: Procedurally generated with proper anatomy
 - **Parallax Background**: Multi-layered scrolling environment
 - **Particle Effects**: Feather particles on successful hits
 - **Professional UI**: FPS counter, timer, and mode display
 
-### 🎮 **Gameplay Features**
+### Gameplay Features
 - **Enhanced Crosshair**: Larger hit radius for easier targeting
 - **Smart Hit Detection**: Distance-based targeting system
 - **Weapon System**: Ammo management and reloading
 - **Scoring System**: Different point values for different targets
 - **Difficulty Scaling**: More rare targets spawn at higher scores
 
-### 🎵 **Audio & Visual**
+### Audio & Visual
 - **Sound Effects**: Shotgun sounds and hit feedback
 - **Visual Feedback**: Crosshair flash on successful hits
 - **Smooth Animations**: 60 FPS gameplay with delta-time physics
 - **Professional Menus**: Complete navigation system
 
-## 🚀 Installation
+## Installation
 
 ### Prerequisites
 - Python 3.10.5 or higher
@@ -91,20 +91,20 @@ A modern, feature-rich duck hunting game with multi-platform support. Experience
    python duck_hunter/main.py
    ```
 
-## 🎮 Controls
+## Controls
 
-### **In-Game Controls**
+### In-Game Controls
 - **Mouse**: Aim and shoot
 - **Left Click**: Fire weapon
 - **R**: Reload weapon
 - **P/Space**: Pause game
 - **ESC**: Pause (first press) / Quit game (second press)
 
-### **Menu Navigation**
+### Menu Navigation
 - **Mouse**: Navigate menus
 - **Click**: Select options
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```
 duck_hunter/
@@ -138,67 +138,67 @@ duck_hunter/
     └── fonts/
 ```
 
-## 🎯 Game Modes Explained
+## Game Modes Explained
 
-### **Easy Mode**
+### Easy Mode
 - **Target**: Beginners and casual players
 - **Lives**: 10 (plenty of room for error)
 - **Ammo**: 15 rounds (generous ammo supply)
 - **Difficulty**: Relaxed and forgiving
 
-### **Normal Mode**
+### Normal Mode
 - **Target**: Regular players
 - **Lives**: 3 (balanced challenge)
 - **Ammo**: 8 rounds (requires strategy)
 - **Difficulty**: Standard hunting experience
 
-### **Hard Mode**
+### Hard Mode
 - **Target**: Experienced players
 - **Lives**: 1 (no room for error)
 - **Ammo**: 5 rounds (very limited)
 - **Difficulty**: Hardcore challenge
 
-### **God Mode**
+### God Mode
 - **Target**: Fun and experimentation
 - **Lives**: ∞ (infinite)
 - **Ammo**: ∞ (unlimited)
 - **Time Limit**: 5 minutes
 - **Difficulty**: Pure enjoyment
 
-## 🎨 Technical Features
+## Technical Features
 
-### **Performance Optimizations**
+### Performance Optimizations
 - **Delta-time Physics**: Frame-rate independent gameplay
 - **Efficient Sprite Management**: Optimized rendering pipeline
 - **Smart Caching**: Resource manager for assets
 - **Smooth Animations**: 60 FPS target with interpolation
 
-### **Graphics Engine**
+### Graphics Engine
 - **Procedural Generation**: Dynamic sprite creation
 - **Parallax Scrolling**: Multi-layered backgrounds
 - **Particle Systems**: Visual effects for hits
 - **Alpha Blending**: Smooth transparency effects
 
-### **Audio System**
+### Audio System
 - **Graceful Degradation**: Works without audio devices
 - **Sound Effects**: Shotgun sounds and feedback
 - **Audio Management**: Centralized audio handling
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
-### **Common Issues**
+### Common Issues
 
 1. **Audio Errors**: The game will run without audio if no device is found
 2. **Font Issues**: Falls back to default Pygame fonts
 3. **Performance**: Ensure you have a dedicated graphics card for best performance
 
-### **System Requirements**
+### System Requirements
 - **OS**: Windows 10+, macOS 10.14+, or Linux
 - **Python**: 3.10.5 or higher
 - **RAM**: 4GB minimum, 8GB recommended
 - **Graphics**: Integrated graphics sufficient, dedicated GPU preferred
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions! Here's how you can help:
 
@@ -208,7 +208,7 @@ We welcome contributions! Here's how you can help:
 4. **Push to the branch**: `git push origin feature/amazing-feature`
 5. **Open a Pull Request**
 
-### **Development Setup**
+### Development Setup
 ```bash
 # Install development dependencies
 pip install -r requirements-dev.txt
@@ -220,28 +220,28 @@ python -m pytest
 black duck_hunter/
 ```
 
-## 📝 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - **Pygame-CE**: For the excellent game development framework
 - **Python Community**: For the amazing ecosystem
 - **Open Source**: For inspiring this project
 
-## 🚨 Current Issues & Status
+## Current Issues & Status
 
-### **Android Port - Black Screen Issue**
+### Android Port - Black Screen Issue
 **Problem**: Android app loads but shows only a black screen with no menu or game content.
 
 **Root Cause**: Identified and partially fixed - the MainActivity was hiding the system UI (navigation/status bars) which prevented the menu from rendering properly.
 
 **Current Status**:
-- ✅ Fixed system UI hiding issue
-- ✅ Added debugging logs to trace initialization
-- ✅ App builds and installs successfully
-- ⚠️ Still experiencing black screen issue - requires further investigation
+- Fixed system UI hiding issue
+- Added debugging logs to trace initialization
+- App builds and installs successfully
+- Still experiencing black screen issue - requires further investigation
 
 **Debugging Steps Taken**:
 1. Fixed `hideSystemUI()` call preventing menu display
@@ -256,12 +256,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Verify GLSurfaceView rendering pipeline
 - Test with different Android devices
 
-### **Known Workarounds**
+### Known Workarounds
 - The Python version runs perfectly on desktop
 - The iOS version is fully functional with native performance
 - Android debug APK builds successfully and installs on device
 
-## 🎯 Future Features
+## Future Features
 
 - **Seasonal Environments**: Fall, Winter, Summer with weather effects
 - **Enhanced Backgrounds**: Rocks, bushes, varied terrain
@@ -272,7 +272,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Android Port Completion**: Fix black screen and complete touch controls
 - **Cross-Platform Features**: Unified high scores, achievements
 
-## 📞 Support
+## Support
 
 If you encounter any issues or have suggestions:
 
@@ -282,6 +282,6 @@ If you encounter any issues or have suggestions:
 
 ---
 
-**Happy Hunting! 🦆🎯**
+**Happy Hunting!**
 
-*Built with ❤️ using Python and Pygame-CE*
+*Built with love using Python and Pygame-CE*
