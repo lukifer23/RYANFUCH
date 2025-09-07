@@ -55,8 +55,15 @@ class GameRenderer(
         // Setup camera
         camera = OrthographicCamera(screenWidth.toFloat(), screenHeight.toFloat())
 
-        // Initialize game engine rendering
-        gameEngine.initializeRendering()
+        // Initialize game engine rendering AFTER OpenGL pipeline is ready
+        Log.i(TAG, "Initializing game engine rendering...")
+        try {
+            gameEngine.initializeRendering()
+            Log.i(TAG, "Game engine rendering initialized successfully")
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to initialize game engine rendering", e)
+            throw RuntimeException("Game engine rendering initialization failed", e)
+        }
 
         Log.i(TAG, "OpenGL initialized successfully")
     }

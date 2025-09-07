@@ -22,8 +22,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Don't hide system UI for main menu - we want the menu to be visible
+        // hideSystemUI() // Commented out - let system UI show for menu
+
         initializeViews()
         setupClickListeners()
+
+        // Add debugging to verify views are loaded
+        android.util.Log.i("MainActivity", "MainActivity created successfully")
+        android.util.Log.i("MainActivity", "Title text: ${titleText.text}")
     }
 
     private fun initializeViews() {
@@ -36,13 +43,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners() {
-        easyButton.setOnClickListener { startGame(GameMode.EASY) }
-        normalButton.setOnClickListener { startGame(GameMode.NORMAL) }
-        hardButton.setOnClickListener { startGame(GameMode.HARD) }
-        godButton.setOnClickListener { startGame(GameMode.GOD) }
+        android.util.Log.i("MainActivity", "Setting up click listeners")
+        easyButton.setOnClickListener {
+            android.util.Log.i("MainActivity", "Easy button clicked")
+            startGame(GameMode.EASY)
+        }
+        normalButton.setOnClickListener {
+            android.util.Log.i("MainActivity", "Normal button clicked")
+            startGame(GameMode.NORMAL)
+        }
+        hardButton.setOnClickListener {
+            android.util.Log.i("MainActivity", "Hard button clicked")
+            startGame(GameMode.HARD)
+        }
+        godButton.setOnClickListener {
+            android.util.Log.i("MainActivity", "God button clicked")
+            startGame(GameMode.GOD)
+        }
+        android.util.Log.i("MainActivity", "Click listeners setup complete")
     }
 
     private fun startGame(gameMode: GameMode) {
+        android.util.Log.i("MainActivity", "Starting game with mode: ${gameMode.displayName}")
         val intent = Intent(this, GameActivity::class.java).apply {
             putExtra("GAME_MODE", gameMode.name)
         }
@@ -53,8 +75,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Hide system UI for immersive experience
-        hideSystemUI()
+        // Don't hide system UI for main menu - we want navigation visible
+        // hideSystemUI() // Commented out for menu visibility
     }
 
     private fun hideSystemUI() {

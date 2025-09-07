@@ -13,13 +13,16 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
         android:text="@string/game_title"
-        android:textColor="@android:color/white"
-        android:textSize="48sp"
+        android:textColor="#FFFFFF00"
+        android:textSize="56sp"
         android:textStyle="bold"
         android:shadowColor="@android:color/black"
-        android:shadowDx="3"
-        android:shadowDy="3"
-        android:shadowRadius="5" />
+        android:shadowDx="6"
+        android:shadowDy="6"
+        android:shadowRadius="12"
+        android:background="#DD000000"
+        android:padding="20dp"
+        android:gravity="center" />
 
     <!-- Subtitle -->
     <TextView
@@ -30,8 +33,15 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:text="@string/touch_to_start"
-        android:textColor="@android:color/gray"
-        android:textSize="18sp" />
+        android:textColor="#FFFF4444"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:shadowColor="@android:color/black"
+        android:shadowDx="4"
+        android:shadowDy="4"
+        android:shadowRadius="8"
+        android:background="#CCFFFFFF"
+        android:padding="12dp" />
 
     <!-- Game Mode Buttons Container -->
     <LinearLayout
@@ -95,34 +105,43 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/drag_to_aim"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
+            android:textColor="#FF00FF00"
+            android:textSize="24sp"
+            android:textStyle="bold"
             android:shadowColor="@android:color/black"
-            android:shadowDx="1"
-            android:shadowDy="1"
-            android:shadowRadius="2" />
+            android:shadowDx="3"
+            android:shadowDy="3"
+            android:shadowRadius="6"
+            android:background="#DDFFFFFF"
+            android:padding="12dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/tap_to_shoot"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
+            android:textColor="#FFFF0000"
+            android:textSize="24sp"
+            android:textStyle="bold"
             android:shadowColor="@android:color/black"
-            android:shadowDx="1"
-            android:shadowDy="1"
-            android:shadowRadius="2" />
+            android:shadowDx="3"
+            android:shadowDy="3"
+            android:shadowRadius="6"
+            android:background="#DDFFFFFF"
+            android:padding="12dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/double_tap_reload"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
+            android:textColor="#FF0000FF"
+            android:textSize="24sp"
+            android:textStyle="bold"
             android:shadowColor="@android:color/black"
-            android:shadowDx="1"
-            android:shadowDy="1"
-            android:shadowRadius="2" />
+            android:shadowDx="3"
+            android:shadowDy="3"
+            android:shadowRadius="6"
+            android:background="#DDFFFFFF"
+            android:padding="12dp" />
 
     </LinearLayout>
 

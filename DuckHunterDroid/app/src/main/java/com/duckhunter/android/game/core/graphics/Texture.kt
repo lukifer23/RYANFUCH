@@ -117,7 +117,7 @@ class Texture(private val context: Context) {
     // Static methods for creating common textures
     companion object {
         // Create a solid color texture
-        fun createSolidColor(width: Int, height: Int, r: Float, g: Float, b: Float, a: Float = 1f): Texture? {
+        fun createSolidColor(context: Context, width: Int, height: Int, r: Float, g: Float, b: Float, a: Float = 1f): Texture? {
             val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
 
             // Fill with color
@@ -134,7 +134,7 @@ class Texture(private val context: Context) {
             bitmap.setPixels(pixels, 0, width, 0, 0, width, height)
 
             return try {
-                val texture = Texture()
+                val texture = Texture(context)
                 texture.createTextureFromBitmap(bitmap)
                 bitmap.recycle()
                 texture
@@ -145,7 +145,7 @@ class Texture(private val context: Context) {
         }
 
         // Create a procedural texture (like crosshair)
-        fun createProcedural(width: Int, height: Int, generator: (Int, Int) -> Int): Texture? {
+        fun createProcedural(context: Context, width: Int, height: Int, generator: (Int, Int) -> Int): Texture? {
             val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
             val pixels = IntArray(width * height)
 
@@ -158,7 +158,7 @@ class Texture(private val context: Context) {
             bitmap.setPixels(pixels, 0, width, 0, 0, width, height)
 
             return try {
-                val texture = Texture()
+                val texture = Texture(context)
                 texture.createTextureFromBitmap(bitmap)
                 bitmap.recycle()
                 texture

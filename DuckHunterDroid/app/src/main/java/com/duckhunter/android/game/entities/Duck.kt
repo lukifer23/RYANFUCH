@@ -5,6 +5,7 @@ import com.duckhunter.android.game.core.graphics.SpriteBatch
 import com.duckhunter.android.game.core.graphics.Texture
 import com.duckhunter.android.game.core.graphics.Vector2
 import kotlin.math.PI
+import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.random.Random
 

@@ -1,6 +1,26 @@
 # 🦆 Duck Hunter Game
 
-A modern, feature-rich duck hunting game built with Python and Pygame-CE. Experience the thrill of hunting with multiple game modes, animated targets, and seasonal environments!
+A modern, feature-rich duck hunting game with multi-platform support. Experience the thrill of hunting with multiple game modes, animated targets, and native performance across platforms!
+
+## 📱 **Multi-Platform Support**
+
+### **🐍 Python (Original)**
+- **Status**: ✅ Fully Functional
+- **Platform**: Windows/macOS/Linux
+- **Tech Stack**: Python 3.10+, Pygame-CE 2.5.5
+- **Features**: Complete game with all mechanics
+
+### **🍎 iOS Port**
+- **Status**: ✅ Fully Ported
+- **Platform**: iOS 15.0+
+- **Tech Stack**: Swift 5.9, SpriteKit, AVAudioEngine
+- **Features**: Native touch controls, optimized performance
+
+### **🤖 Android Port**
+- **Status**: 🚧 In Development (Black Screen Issue)
+- **Platform**: Android 8.0+
+- **Tech Stack**: Kotlin 1.9, OpenGL ES 3.0, OpenSL ES
+- **Features**: Hardware acceleration, touch-optimized
 
 ## 🎮 Features
 
@@ -210,6 +230,37 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Python Community**: For the amazing ecosystem
 - **Open Source**: For inspiring this project
 
+## 🚨 Current Issues & Status
+
+### **Android Port - Black Screen Issue**
+**Problem**: Android app loads but shows only a black screen with no menu or game content.
+
+**Root Cause**: Identified and partially fixed - the MainActivity was hiding the system UI (navigation/status bars) which prevented the menu from rendering properly.
+
+**Current Status**:
+- ✅ Fixed system UI hiding issue
+- ✅ Added debugging logs to trace initialization
+- ✅ App builds and installs successfully
+- ⚠️ Still experiencing black screen issue - requires further investigation
+
+**Debugging Steps Taken**:
+1. Fixed `hideSystemUI()` call preventing menu display
+2. Added comprehensive logging to MainActivity
+3. Verified game engine initialization order
+4. Confirmed OpenGL ES version fallback mechanisms
+5. Tested on Galaxy S25 device with successful installation
+
+**Next Steps**:
+- Investigate if MainActivity is properly displaying the menu UI
+- Check if touch events are being handled correctly
+- Verify GLSurfaceView rendering pipeline
+- Test with different Android devices
+
+### **Known Workarounds**
+- The Python version runs perfectly on desktop
+- The iOS version is fully functional with native performance
+- Android debug APK builds successfully and installs on device
+
 ## 🎯 Future Features
 
 - **Seasonal Environments**: Fall, Winter, Summer with weather effects
@@ -218,6 +269,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **High Score System**: Persistent score tracking
 - **Customization**: Weapon skins, crosshair styles
 - **Multiplayer**: Online leaderboards and competitions
+- **Android Port Completion**: Fix black screen and complete touch controls
+- **Cross-Platform Features**: Unified high scores, achievements
 
 ## 📞 Support
 

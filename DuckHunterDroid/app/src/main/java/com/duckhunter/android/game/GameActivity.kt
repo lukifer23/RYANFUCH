@@ -28,52 +28,93 @@ class GameActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Get game mode from intent
-        val gameModeString = intent.getStringExtra("GAME_MODE") ?: "NORMAL"
-        gameMode = GameMode.fromString(gameModeString)
+        try {
+            // Get game mode from intent
+            val gameModeString = intent.getStringExtra("GAME_MODE") ?: "NORMAL"
+            gameMode = GameMode.fromString(gameModeString)
 
-        Log.i(TAG, "Starting game in ${gameMode.displayName} mode")
+            Log.i(TAG, "Starting game in ${gameMode.displayName} mode")
 
-        // Check for OpenGL ES 3.0 support
-        if (!supportsOpenGLES3()) {
-            Toast.makeText(this, "OpenGL ES 3.0 not supported on this device", Toast.LENGTH_LONG).show()
-            finish()
-            return
+            // Check for OpenGL ES 3.0 support
+            if (!supportsOpenGLES3()) {
+                Log.e(TAG, "OpenGL ES 3.0 not supported on this device")
+                runOnUiThread {
+                    Toast.makeText(this, "OpenGL ES 3.0 not supported. This device may not support the game.", Toast.LENGTH_LONG).show()
+                    finish()
+                }
+                return
+            }
+
+            // Initialize game engine FIRST
+            gameEngine = GameEngine(this, gameMode)
+
+            // Initialize OpenGL surface AFTER game engine is ready
+            initializeOpenGL()
+
+            Log.i(TAG, "GameActivity initialized successfully")
+
+        } catch (e: Exception) {
+            Log.e(TAG, "Error initializing GameActivity", e)
+            runOnUiThread {
+                Toast.makeText(this, "Error starting game: ${e.message}", Toast.LENGTH_LONG).show()
+                finish()
+            }
         }
-
-        // Initialize OpenGL surface
-        initializeOpenGL()
-
-        // Initialize game engine
-        gameEngine = GameEngine(this, gameMode)
-
-        Log.i(TAG, "GameActivity initialized successfully")
     }
 
     private fun supportsOpenGLES3(): Boolean {
-        val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        val configurationInfo = activityManager.deviceConfigurationInfo
+        return try {
+            val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            val configurationInfo = activityManager.deviceConfigurationInfo
 
-        return configurationInfo.reqGlEsVersion >= 0x30000
+            val supported = configurationInfo.reqGlEsVersion >= 0x30000
+            Log.i(TAG, "OpenGL ES version: 0x${configurationInfo.reqGlEsVersion.toString(16)}, ES 3.0 supported: $supported")
+            supported
+        } catch (e: Exception) {
+            Log.e(TAG, "Error checking OpenGL ES support", e)
+            false
+        }
     }
 
     private fun initializeOpenGL() {
-        glSurfaceView = GLSurfaceView(this).apply {
-            // Request OpenGL ES 3.0
-            setEGLContextClientVersion(3)
+        try {
+            glSurfaceView = GLSurfaceView(this).apply {
+                // Try OpenGL ES 3.0 first, fallback to 2.0
+                try {
+                    setEGLContextClientVersion(3)
+                    Log.i(TAG, "Requesting OpenGL ES 3.0")
+                } catch (e: Exception) {
+                    Log.w(TAG, "OpenGL ES 3.0 failed, trying 2.0", e)
+                    try {
+                        setEGLContextClientVersion(2)
+                        Log.i(TAG, "Requesting OpenGL ES 2.0")
+                    } catch (e2: Exception) {
+                        Log.e(TAG, "OpenGL ES 2.0 also failed", e2)
+                        throw RuntimeException("No supported OpenGL ES version found")
+                    }
+                }
 
-            // Set renderer
-            gameRenderer = GameRenderer(this@GameActivity, gameEngine)
-            setRenderer(gameRenderer)
+                // Set renderer
+                gameRenderer = GameRenderer(this@GameActivity, gameEngine)
+                setRenderer(gameRenderer)
 
-            // Render only when needed to save battery
-            renderMode = GLSurfaceView.RENDERMODE_CONTINUOUSLY
+                // Render only when needed to save battery
+                renderMode = GLSurfaceView.RENDERMODE_CONTINUOUSLY
 
-            // Handle touch events
-            setOnTouchListener { _, event -> handleTouch(event) }
+                // Handle touch events
+                setOnTouchListener { _, event -> handleTouch(event) }
+            }
+
+            setContentView(glSurfaceView)
+            Log.i(TAG, "OpenGL surface initialized successfully")
+
+        } catch (e: Exception) {
+            Log.e(TAG, "Error initializing OpenGL", e)
+            runOnUiThread {
+                Toast.makeText(this, "Error initializing graphics: ${e.message}", Toast.LENGTH_LONG).show()
+                finish()
+            }
         }
-
-        setContentView(glSurfaceView)
     }
 
     private fun handleTouch(event: MotionEvent): Boolean {
