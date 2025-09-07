@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/black"
     android:padding="32dp">
 
     <!-- Title -->
@@ -13,15 +12,13 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
         android:text="@string/game_title"
-        android:textColor="#FFFFFF00"
+        android:textColor="@android:color/white"
         android:textSize="56sp"
         android:textStyle="bold"
-        android:shadowColor="@android:color/black"
-        android:shadowDx="6"
-        android:shadowDy="6"
-        android:shadowRadius="12"
-        android:background="#DD000000"
-        android:padding="20dp"
+        android:shadowColor="#80000000"
+        android:shadowDx="4"
+        android:shadowDy="4"
+        android:shadowRadius="8"
         android:gravity="center" />
 
     <!-- Subtitle -->
@@ -33,15 +30,13 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:text="@string/touch_to_start"
-        android:textColor="#FFFF4444"
+        android:textColor="@android:color/white"
         android:textSize="28sp"
         android:textStyle="bold"
-        android:shadowColor="@android:color/black"
-        android:shadowDx="4"
-        android:shadowDy="4"
-        android:shadowRadius="8"
-        android:background="#CCFFFFFF"
-        android:padding="12dp" />
+        android:shadowColor="#80000000"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="6"/>
 
     <!-- Game Mode Buttons Container -->
     <LinearLayout
@@ -104,44 +99,40 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:text="@string/drag_to_aim"
-            android:textColor="#FF00FF00"
-            android:textSize="24sp"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:shadowColor="@android:color/black"
-            android:shadowDx="3"
-            android:shadowDy="3"
-            android:shadowRadius="6"
-            android:background="#DDFFFFFF"
-            android:padding="12dp" />
+            android:shadowColor="#80000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="4" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:text="@string/tap_to_shoot"
-            android:textColor="#FFFF0000"
-            android:textSize="24sp"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:shadowColor="@android:color/black"
-            android:shadowDx="3"
-            android:shadowDy="3"
-            android:shadowRadius="6"
-            android:background="#DDFFFFFF"
-            android:padding="12dp" />
+            android:shadowColor="#80000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="4" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/double_tap_reload"
-            android:textColor="#FF0000FF"
-            android:textSize="24sp"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:shadowColor="@android:color/black"
-            android:shadowDx="3"
-            android:shadowDy="3"
-            android:shadowRadius="6"
-            android:background="#DDFFFFFF"
-            android:padding="12dp" />
+            android:shadowColor="#80000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="4" />
 
     </LinearLayout>
 
