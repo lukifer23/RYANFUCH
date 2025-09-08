@@ -1,6 +1,7 @@
 package com.duckhunter.android.game.core
 
 import android.content.Context
+import android.graphics.Canvas
 import android.opengl.GLES30
 import android.opengl.GLSurfaceView
 import android.opengl.Matrix
@@ -69,28 +70,43 @@ class GameRenderer(
     }
 
     override fun onDrawFrame(gl: GL10?) {
-        // Clear the screen
-        GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT or GLES30.GL_DEPTH_BUFFER_BIT)
+        try {
+            // Clear the screen
+            GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT or GLES30.GL_DEPTH_BUFFER_BIT)
 
-        // Update camera
-        camera.update()
+            // Check if we should render menu or game
+            if (gameEngine.getGameState() == GameEngine.GameState.MENU) {
+                // For menu, we need to clear to white and let the Canvas rendering handle it
+                GLES30.glClearColor(1.0f, 1.0f, 1.0f, 1.0f)
+                Log.v(TAG, "Menu state - skipping OpenGL rendering")
+                return
+            }
 
-        // Setup model-view-projection matrix
-        Matrix.multiplyMM(mvpMatrix, 0, projectionMatrix, 0, viewMatrix, 0)
+            // Set game background color
+            GLES30.glClearColor(0.0f, 0.0f, 0.0f, 1.0f)
 
-        // Begin sprite batch rendering
-        spriteBatch.begin(camera.combined)
+            // Update camera
+            camera.update()
 
-        // Render game objects
-        gameEngine.render(spriteBatch)
+            // Setup model-view-projection matrix
+            Matrix.multiplyMM(mvpMatrix, 0, projectionMatrix, 0, viewMatrix, 0)
 
-        // End sprite batch
-        spriteBatch.end()
+            // Begin sprite batch rendering
+            spriteBatch.begin(camera.combined)
 
-        // Check for OpenGL errors
-        val error = GLES30.glGetError()
-        if (error != GLES30.GL_NO_ERROR) {
-            Log.e(TAG, "OpenGL Error: $error")
+            // Render game objects
+            gameEngine.render(spriteBatch)
+
+            // End sprite batch
+            spriteBatch.end()
+
+            // Check for OpenGL errors
+            val error = GLES30.glGetError()
+            if (error != GLES30.GL_NO_ERROR) {
+                Log.e(TAG, "OpenGL Error: $error")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error in onDrawFrame", e)
         }
     }
 

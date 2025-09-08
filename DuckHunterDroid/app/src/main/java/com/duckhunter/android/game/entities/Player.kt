@@ -2,7 +2,7 @@ package com.duckhunter.android.game.entities
 
 import com.duckhunter.android.game.GameMode
 
-class Player(private val gameMode: GameMode) {
+class Player(val gameMode: GameMode) {
 
     // Stats
     var score = 0
@@ -15,7 +15,8 @@ class Player(private val gameMode: GameMode) {
         private set
 
     // Weapon state
-    private var isReloading = false
+    var isReloading = false
+        private set
     private var reloadTime = 1.5f // seconds
     private var reloadProgress = 0f
 

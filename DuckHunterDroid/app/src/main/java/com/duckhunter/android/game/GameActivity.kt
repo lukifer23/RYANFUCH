@@ -3,10 +3,15 @@ package com.duckhunter.android.game
 import android.app.ActivityManager
 import android.content.Context
 import android.content.pm.ConfigurationInfo
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.PixelFormat
 import android.opengl.GLSurfaceView
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
+import android.view.SurfaceHolder
+import android.view.SurfaceView
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -16,12 +21,14 @@ import com.duckhunter.android.game.core.GameRenderer
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
-class GameActivity : AppCompatActivity() {
+class GameActivity : AppCompatActivity(), SurfaceHolder.Callback {
 
     private lateinit var glSurfaceView: GLSurfaceView
+    private lateinit var menuSurfaceView: SurfaceView
     private lateinit var gameEngine: GameEngine
     private lateinit var gameRenderer: GameRenderer
     private var gameMode: GameMode = GameMode.NORMAL
+    private var isInMenu = true
 
     private val TAG = "GameActivity"
 
@@ -48,8 +55,12 @@ class GameActivity : AppCompatActivity() {
             // Initialize game engine FIRST
             gameEngine = GameEngine(this, gameMode)
 
-            // Initialize OpenGL surface AFTER game engine is ready
+            // Initialize both menu and game surfaces
+            initializeMenuSurface()
             initializeOpenGL()
+
+            // Start with menu
+            showMenu()
 
             Log.i(TAG, "GameActivity initialized successfully")
 
@@ -74,6 +85,35 @@ class GameActivity : AppCompatActivity() {
             Log.e(TAG, "Error checking OpenGL ES support", e)
             false
         }
+    }
+
+    private fun initializeMenuSurface() {
+        try {
+            menuSurfaceView = SurfaceView(this).apply {
+                setZOrderOnTop(true)
+                holder.setFormat(PixelFormat.TRANSPARENT)
+                holder.addCallback(this@GameActivity)
+            }
+            Log.i(TAG, "Menu surface initialized successfully")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error initializing menu surface", e)
+        }
+    }
+
+    private fun showMenu() {
+        isInMenu = true
+        runOnUiThread {
+            setContentView(menuSurfaceView)
+        }
+        Log.i(TAG, "Switched to menu view")
+    }
+
+    private fun showGame() {
+        isInMenu = false
+        runOnUiThread {
+            setContentView(glSurfaceView)
+        }
+        Log.i(TAG, "Switched to game view")
     }
 
     private fun initializeOpenGL() {
@@ -123,16 +163,25 @@ class GameActivity : AppCompatActivity() {
                 val pointerIndex = event.actionIndex
                 val x = event.getX(pointerIndex)
                 val y = event.getY(pointerIndex)
-                gameEngine.handleTouchDown(x, y)
+
+                if (isInMenu) {
+                    // Handle menu touch
+                    handleMenuTouch(x, y)
+                } else {
+                    // Handle game touch
+                    gameEngine.handleTouchDown(x, y)
+                }
                 return true
             }
 
             MotionEvent.ACTION_MOVE -> {
-                // Handle multi-touch for crosshair movement
-                for (i in 0 until event.pointerCount) {
-                    val x = event.getX(i)
-                    val y = event.getY(i)
-                    gameEngine.handleTouchMove(x, y)
+                if (!isInMenu) {
+                    // Handle multi-touch for crosshair movement
+                    for (i in 0 until event.pointerCount) {
+                        val x = event.getX(i)
+                        val y = event.getY(i)
+                        gameEngine.handleTouchMove(x, y)
+                    }
                 }
                 return true
             }
@@ -141,11 +190,31 @@ class GameActivity : AppCompatActivity() {
                 val pointerIndex = event.actionIndex
                 val x = event.getX(pointerIndex)
                 val y = event.getY(pointerIndex)
-                gameEngine.handleTouchUp(x, y)
+
+                if (!isInMenu) {
+                    gameEngine.handleTouchUp(x, y)
+                }
                 return true
             }
         }
         return false
+    }
+
+    private fun handleMenuTouch(x: Float, y: Float) {
+        // Handle menu touch through GameEngine
+        gameEngine.handleTouchDown(x, y)
+
+        // Check if game state changed to playing
+        if (gameEngine.getGameState() == GameEngine.GameState.PLAYING) {
+            // Switch to game view
+            showGame()
+            return
+        }
+
+        // Re-render menu after touch
+        if (menuSurfaceView.holder.surface.isValid) {
+            renderMenu(menuSurfaceView.holder)
+        }
     }
 
     override fun onResume() {
@@ -172,6 +241,47 @@ class GameActivity : AppCompatActivity() {
         } else {
             super.onBackPressed()
         }
+    }
+
+    // SurfaceHolder callback methods for menu rendering
+    override fun surfaceCreated(holder: SurfaceHolder) {
+        if (isInMenu) {
+            renderMenu(holder)
+        }
+    }
+
+    override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
+        if (isInMenu) {
+            renderMenu(holder)
+        }
+    }
+
+    override fun surfaceDestroyed(holder: SurfaceHolder) {
+        // Cleanup if needed
+    }
+
+    private fun renderMenu(holder: SurfaceHolder) {
+        try {
+            val canvas = holder.lockCanvas()
+            if (canvas != null) {
+                // Clear canvas with white background
+                canvas.drawColor(Color.WHITE)
+
+                // Render menu
+                gameEngine.renderCanvas(canvas, canvas.width, canvas.height)
+
+                holder.unlockCanvasAndPost(canvas)
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error rendering menu", e)
+        }
+    }
+
+    // Method to switch to game when menu selection is made
+    fun startGame(selectedMode: GameMode) {
+        gameMode = selectedMode
+        gameEngine.startGameWithMode(selectedMode)
+        showGame()
     }
 
     // Public methods for renderer to communicate with activity

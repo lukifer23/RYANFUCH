@@ -1,11 +1,19 @@
 package com.duckhunter.android.game.core
 
 import android.content.Context
+import android.graphics.Canvas
 import android.util.Log
 import com.duckhunter.android.game.GameMode
 import com.duckhunter.android.game.core.graphics.SpriteBatch
 import com.duckhunter.android.game.core.graphics.Texture
 import com.duckhunter.android.game.entities.*
+import com.duckhunter.android.game.systems.DuckSpawnManager
+import com.duckhunter.android.game.systems.GroundAnimalSpawnManager
+import com.duckhunter.android.game.systems.UISystem
+import com.duckhunter.android.game.systems.BackgroundSystem
+import com.duckhunter.android.game.systems.ParticleSystem
+import com.duckhunter.android.game.core.AudioManager
+import com.duckhunter.android.game.MenuManager
 
 class GameEngine(private val context: Context, private val gameMode: GameMode) {
 
@@ -14,6 +22,7 @@ class GameEngine(private val context: Context, private val gameMode: GameMode) {
     // Game state
     private var gameState: GameState = GameState.MENU
     private var isInitialized = false
+    private var hasStartedGame = false
 
     // Rendering
     private lateinit var spriteBatch: SpriteBatch
@@ -21,8 +30,23 @@ class GameEngine(private val context: Context, private val gameMode: GameMode) {
     // Game objects
     private val ducks = mutableListOf<Duck>()
     private val groundAnimals = mutableListOf<GroundAnimal>()
-    private lateinit var player: Player
+    private var player: Player? = null
     private lateinit var crosshair: Crosshair
+
+    // Spawn managers
+    private lateinit var duckSpawnManager: DuckSpawnManager
+    private lateinit var groundAnimalSpawnManager: GroundAnimalSpawnManager
+
+    // Visual systems
+    private lateinit var uiSystem: UISystem
+    private lateinit var backgroundSystem: BackgroundSystem
+    private lateinit var particleSystem: ParticleSystem
+
+    // Audio system
+    private lateinit var audioManager: AudioManager
+
+    // Menu system
+    private lateinit var menuManager: MenuManager
 
     // Game timing
     private var lastUpdateTime = 0L
@@ -42,19 +66,37 @@ class GameEngine(private val context: Context, private val gameMode: GameMode) {
         try {
             Log.d(TAG, "Step 1: Creating player...")
             player = Player(gameMode)
-            Log.d(TAG, "✓ Player created successfully: ${player.score} score, ${player.lives} lives")
+            Log.d(TAG, "✓ Player created successfully: ${player?.score} score, ${player?.lives} lives")
 
             Log.d(TAG, "Step 2: Creating crosshair...")
             crosshair = Crosshair()
             Log.d(TAG, "✓ Crosshair created successfully")
 
-            Log.d(TAG, "Step 3: Creating test game objects...")
-            createTestObjects()
-            Log.d(TAG, "✓ Test objects created: ${ducks.size} ducks, ${groundAnimals.size} animals")
+            Log.d(TAG, "Step 3: Creating spawn managers...")
+            duckSpawnManager = DuckSpawnManager(ducks, player!!)
+            groundAnimalSpawnManager = GroundAnimalSpawnManager(context, groundAnimals, player!!)
+            Log.d(TAG, "✓ Spawn managers created")
+
+            Log.d(TAG, "Step 4: Creating visual systems...")
+            uiSystem = UISystem()
+            uiSystem.setGameMode(player?.gameMode ?: gameMode)
+            backgroundSystem = BackgroundSystem()
+            particleSystem = ParticleSystem()
+            Log.d(TAG, "✓ Visual systems created")
+
+            Log.d(TAG, "Step 5: Creating audio system...")
+            audioManager = AudioManager(context)
+            Log.d(TAG, "✓ Audio system created")
+
+            Log.d(TAG, "Step 6: Creating menu system...")
+            menuManager = MenuManager(context, audioManager)
+            Log.d(TAG, "✓ Menu system created")
+
+            // Don't create initial game objects yet - wait for menu selection
+            Log.d(TAG, "Game engine initialized - waiting for menu selection")
 
             isInitialized = true
-            Log.i(TAG, "🎯 GAME ENGINE INITIALIZATION COMPLETE for ${gameMode.displayName}")
-            Log.i(TAG, "📊 Game Stats: Ducks=${ducks.size}, Animals=${groundAnimals.size}, Player=${player.lives} lives")
+            Log.i(TAG, "🎯 GAME ENGINE INITIALIZATION COMPLETE - MENU MODE")
 
         } catch (e: Exception) {
             Log.e(TAG, "❌ GAME ENGINE INITIALIZATION FAILED", e)
@@ -64,22 +106,22 @@ class GameEngine(private val context: Context, private val gameMode: GameMode) {
         }
     }
 
-    private fun createTestObjects() {
+    private fun createInitialObjects() {
         try {
-            Log.d(TAG, "Creating test duck...")
-            val duck = Duck(context, 500f, 300f)
+            Log.d(TAG, "Creating initial duck...")
+            val duck = Duck(Duck.DuckType.COMMON, 500f, 300f)
             ducks.add(duck)
-            Log.d(TAG, "✓ Duck created at (${duck.position.x}, ${duck.position.y})")
+            Log.d(TAG, "✓ Duck created at (${duck.position.x}, ${duck.position.y}) - Type: ${duck.duckType.displayName}, Points: ${duck.pointValue}")
 
-            Log.d(TAG, "Creating test ground animal...")
+            Log.d(TAG, "Creating initial ground animal...")
             val animal = GroundAnimal(context, GroundAnimal.AnimalType.RABBIT, screenWidth + 100f, 100f)
             groundAnimals.add(animal)
-            Log.d(TAG, "✓ Animal created at (${animal.position.x}, ${animal.position.y})")
+            Log.d(TAG, "✓ Animal created at (${animal.position.x}, ${animal.position.y}) - Type: ${animal.animalType.name}")
 
-            Log.i(TAG, "✅ Created test game objects: ${ducks.size} ducks, ${groundAnimals.size} animals")
+            Log.i(TAG, "✅ Created initial game objects: ${ducks.size} ducks, ${groundAnimals.size} animals")
 
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Failed to create test objects", e)
+            Log.e(TAG, "❌ Failed to create initial objects", e)
             throw e
         }
     }
@@ -108,6 +150,16 @@ class GameEngine(private val context: Context, private val gameMode: GameMode) {
     }
 
     private fun updateGameplay() {
+        // Update spawn managers
+        player?.let {
+            duckSpawnManager.update(deltaTime)
+            groundAnimalSpawnManager.update(deltaTime)
+        }
+
+        // Update visual systems
+        backgroundSystem.update(deltaTime)
+        particleSystem.update(deltaTime)
+
         // Update ducks
         ducks.forEach { it.update(deltaTime) }
 
@@ -117,12 +169,12 @@ class GameEngine(private val context: Context, private val gameMode: GameMode) {
         // Update crosshair
         crosshair.update(deltaTime)
 
+        // Update player (reload mechanics)
+        player?.updateReload(deltaTime)
+
         // Remove off-screen objects
         ducks.removeAll { it.isOffScreen() }
         groundAnimals.removeAll { it.isOffScreen() }
-
-        // Spawn new objects occasionally
-        spawnObjects()
     }
 
     private fun updateMenu() {
@@ -137,19 +189,6 @@ class GameEngine(private val context: Context, private val gameMode: GameMode) {
         // Game over logic here
     }
 
-    private fun spawnObjects() {
-        // Simple spawning logic for testing
-        if (ducks.size < 3 && Math.random() < 0.005) { // 0.5% chance per frame
-            val duck = Duck(context, -100f, (Math.random() * 600 + 200).toFloat())
-            ducks.add(duck)
-        }
-
-        if (groundAnimals.size < 2 && Math.random() < 0.003) {
-            val animalType = GroundAnimal.AnimalType.values().random()
-            val animal = GroundAnimal(context, animalType, screenWidth + 100f, 100f)
-            groundAnimals.add(animal)
-        }
-    }
 
     fun render(spriteBatch: SpriteBatch) {
         if (!isInitialized) {
@@ -161,13 +200,16 @@ class GameEngine(private val context: Context, private val gameMode: GameMode) {
             this.spriteBatch = spriteBatch
             Log.v(TAG, "Rendering frame: ${ducks.size} ducks, ${groundAnimals.size} animals")
 
-            // Try full rendering first
-            try {
-                renderFullGraphics(spriteBatch)
-                Log.v(TAG, "Full graphics rendering successful")
-            } catch (e: Exception) {
-                Log.w(TAG, "Full graphics failed, trying fallback mode", e)
-                renderFallbackGraphics()
+            when (gameState) {
+                GameState.PLAYING -> renderPlaying(spriteBatch)
+                GameState.MENU -> renderMenu(spriteBatch)
+                GameState.PAUSED -> renderPaused(spriteBatch)
+                GameState.GAME_OVER -> renderGameOver(spriteBatch)
+            }
+
+            // Always render menu on top if in menu state
+            if (menuManager.isInMenu()) {
+                // Menu rendering will be handled by the GameRenderer via renderCanvas
             }
 
         } catch (e: Exception) {
@@ -175,11 +217,40 @@ class GameEngine(private val context: Context, private val gameMode: GameMode) {
         }
     }
 
-    private fun renderFullGraphics(spriteBatch: SpriteBatch) {
-        // Render background
-        renderBackground()
+    // Canvas-based rendering method for UI and background
+    fun renderCanvas(canvas: Canvas, screenWidth: Int, screenHeight: Int) {
+        if (!isInitialized) return
 
-        // Render game objects
+        try {
+            // Render background
+            backgroundSystem.render(canvas)
+
+            // Render menu if in menu state
+            if (menuManager.isInMenu()) {
+                menuManager.render(canvas, screenWidth, screenHeight)
+                return // Don't render game UI when in menu
+            }
+
+            // Render UI
+            when (gameState) {
+                GameState.PLAYING -> {
+                    player?.let { uiSystem.render(canvas, it, deltaTime) }
+                }
+                GameState.PAUSED -> {
+                    uiSystem.drawPauseScreen(canvas)
+                }
+                GameState.GAME_OVER -> {
+                    player?.let { uiSystem.drawGameOverScreen(canvas, it.score, it.gameMode) }
+                }
+                else -> {}
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error in Canvas rendering", e)
+        }
+    }
+
+    private fun renderPlaying(spriteBatch: SpriteBatch) {
+        // Render ducks
         ducks.forEach { duck ->
             try {
                 duck.render(spriteBatch)
@@ -188,6 +259,7 @@ class GameEngine(private val context: Context, private val gameMode: GameMode) {
             }
         }
 
+        // Render ground animals
         groundAnimals.forEach { animal ->
             try {
                 animal.render(spriteBatch)
@@ -203,49 +275,49 @@ class GameEngine(private val context: Context, private val gameMode: GameMode) {
             Log.e(TAG, "Error rendering crosshair", e)
         }
 
-        // Render UI
-        renderUI()
-    }
-
-    private fun renderFallbackGraphics() {
+        // Render particles
         try {
-            Log.i(TAG, "🛟 Using fallback graphics mode")
-
-            // Simple colored rectangles as fallback
-            // This will help isolate if the issue is with OpenGL or game logic
-
-            // Render simple colored shapes to show the game is working
-            // Even if OpenGL textures fail, we can show basic shapes
-
-            Log.i(TAG, "Fallback rendering complete - basic shapes displayed")
-
+            particleSystem.render(spriteBatch)
         } catch (e: Exception) {
-            Log.e(TAG, "Even fallback graphics failed", e)
+            Log.e(TAG, "Error rendering particles", e)
         }
     }
 
-    private fun renderBackground() {
-        try {
-            // Simple background rendering - will be enhanced later
-            // For now, just clear to black (handled by OpenGL)
-            Log.v(TAG, "Background rendered")
-        } catch (e: Exception) {
-            Log.e(TAG, "Error rendering background", e)
-        }
+    private fun renderMenu(spriteBatch: SpriteBatch) {
+        // Menu rendering would go here
+        // For now, just render background
+        backgroundSystem.render(spriteBatch)
     }
 
-    private fun renderUI() {
-        try {
-            // Basic UI rendering - will be enhanced later
-            Log.v(TAG, "UI rendered")
-        } catch (e: Exception) {
-            Log.e(TAG, "Error rendering UI", e)
-        }
+    private fun renderPaused(spriteBatch: SpriteBatch) {
+        renderPlaying(spriteBatch) // Render game in background
+        // Pause overlay would be rendered here
     }
+
+    private fun renderGameOver(spriteBatch: SpriteBatch) {
+        renderPlaying(spriteBatch) // Render game in background
+        // Game over overlay would be rendered here
+    }
+
 
     // Input handling
     fun handleTouchDown(x: Float, y: Float) {
         crosshair.setPosition(x, y)
+
+        // Handle menu input first if in menu
+        if (gameState == GameState.MENU) {
+            if (menuManager.handleTouch(x, y, screenWidth, screenHeight)) {
+                // Menu handled the input
+                if (menuManager.shouldStartGame()) {
+                    // Start the game with selected difficulty
+                    val selectedMode = menuManager.getSelectedDifficulty()
+                    // Change state to playing
+                    gameState = GameState.PLAYING
+                    Log.i(TAG, "Menu selection made - switching to game mode: ${selectedMode.displayName}")
+                    return
+                }
+            }
+        }
 
         when (gameState) {
             GameState.MENU -> handleMenuTouch(x, y)
@@ -261,9 +333,22 @@ class GameEngine(private val context: Context, private val gameMode: GameMode) {
     fun handleTouchUp(x: Float, y: Float) {
         when (gameState) {
             GameState.PLAYING -> {
-                // Check for hits
-                checkHits(x, y)
-                player.shoot()
+                player?.let {
+                    if (it.shoot()) {
+                        // Player successfully shot
+                        audioManager.playShotSound()
+                        checkHits(x, y)
+                        Log.d(TAG, "Shot fired! Ammo: ${it.ammo}/${it.gameMode.maxAmmo}")
+                    } else {
+                        // Player couldn't shoot (no ammo, reloading, etc.)
+                        if (it.ammo == 0) {
+                            audioManager.playEmptyClickSound()
+                        } else if (it.isReloading) {
+                            audioManager.playReloadSound()
+                        }
+                        Log.d(TAG, "Cannot shoot - Ammo: ${it.ammo}, Reloading: ${it.isReloading}")
+                    }
+                }
             }
             else -> {}
         }
@@ -278,34 +363,50 @@ class GameEngine(private val context: Context, private val gameMode: GameMode) {
     }
 
     private fun checkHits(touchX: Float, touchY: Float) {
-        val hitRadius = 50f // pixels
+        // Use crosshair hit radius for more accurate detection
+        val hitRadius = crosshair.getHitRadius()
+        var hitSomething = false
 
         // Check duck hits
         ducks.forEach { duck ->
-            val distance = Math.sqrt(
-                Math.pow((touchX - duck.position.x).toDouble(), 2.0) +
-                Math.pow((touchY - duck.position.y).toDouble(), 2.0)
-            ).toFloat()
+            val distance = kotlin.math.sqrt(
+                (touchX - duck.position.x) * (touchX - duck.position.x) +
+                (touchY - duck.position.y) * (touchY - duck.position.y)
+            )
 
-            if (distance <= hitRadius) {
+            if (distance <= hitRadius && duck.state == Duck.DuckState.FLYING) {
                 duck.hit()
-                player.addScore(duck.pointValue)
-                Log.i(TAG, "Duck hit! +${duck.pointValue} points")
+                player?.addScore(duck.pointValue)
+                crosshair.flash() // Visual feedback
+                particleSystem.emitFeathers(duck.position) // Particle effect
+                audioManager.playHitSound() // Audio feedback
+                hitSomething = true
+                Log.i(TAG, "Duck hit! ${duck.duckType.name} duck: +${duck.pointValue} points")
             }
         }
 
         // Check ground animal hits
         groundAnimals.forEach { animal ->
-            val distance = Math.sqrt(
-                Math.pow((touchX - animal.position.x).toDouble(), 2.0) +
-                Math.pow((touchY - animal.position.y).toDouble(), 2.0)
-            ).toFloat()
+            val distance = kotlin.math.sqrt(
+                (touchX - animal.position.x) * (touchX - animal.position.x) +
+                (touchY - animal.position.y) * (touchY - animal.position.y)
+            )
 
-            if (distance <= hitRadius) {
+            if (distance <= hitRadius && animal.state == GroundAnimal.AnimalState.WALKING) {
                 animal.hit()
-                player.addScore(animal.pointValue)
-                Log.i(TAG, "Animal hit! +${animal.pointValue} points")
+                player?.addScore(animal.pointValue)
+                crosshair.flash() // Visual feedback
+                particleSystem.emitHitSparks(animal.position) // Particle effect
+                audioManager.playHitSound() // Audio feedback
+                hitSomething = true
+                Log.i(TAG, "Animal hit! ${animal.animalType.name}: +${animal.pointValue} points")
             }
+        }
+
+        // If nothing was hit, play miss sound
+        if (!hitSomething) {
+            audioManager.playMissSound()
+            Log.d(TAG, "Shot missed - no targets in range")
         }
     }
 
@@ -313,6 +414,41 @@ class GameEngine(private val context: Context, private val gameMode: GameMode) {
     fun startGame() {
         gameState = GameState.PLAYING
         Log.i(TAG, "Game started")
+    }
+
+    fun startGameWithMode(gameMode: GameMode) {
+        if (hasStartedGame) {
+            Log.w(TAG, "Game already started, ignoring duplicate start request")
+            return
+        }
+
+        try {
+            Log.i(TAG, "Starting game with mode: ${gameMode.displayName}")
+
+            // Update player with new game mode
+            player = Player(gameMode)
+            val playerInstance = player!!
+            playerInstance.reset()
+
+            // Reset game state
+            gameState = GameState.PLAYING
+            ducks.clear()
+            groundAnimals.clear()
+
+            // Reset spawn managers with new game mode
+            duckSpawnManager = DuckSpawnManager(ducks, playerInstance)
+            groundAnimalSpawnManager = GroundAnimalSpawnManager(context, groundAnimals, playerInstance)
+
+            // Create initial objects
+            createInitialObjects()
+
+            hasStartedGame = true
+            Log.i(TAG, "✅ Game successfully started with mode: ${gameMode.displayName}")
+
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Failed to start game with mode: ${gameMode.displayName}", e)
+            gameState = GameState.MENU // Revert to menu on error
+        }
     }
 
     fun pauseGame() {
@@ -351,12 +487,13 @@ class GameEngine(private val context: Context, private val gameMode: GameMode) {
         // Cleanup resources
         ducks.clear()
         groundAnimals.clear()
+        audioManager.dispose()
         Log.i(TAG, "GameEngine destroyed")
     }
 
     // Getters
     fun isPlaying(): Boolean = gameState == GameState.PLAYING
     fun isPaused(): Boolean = gameState == GameState.PAUSED
-    fun getPlayer(): Player = player
+    fun getPlayer(): Player? = player
     fun getGameState(): GameState = gameState
 }

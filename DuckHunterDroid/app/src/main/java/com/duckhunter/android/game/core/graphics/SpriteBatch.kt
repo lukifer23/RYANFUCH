@@ -195,6 +195,78 @@ class SpriteBatch(private val shaderProgram: ShaderProgram, maxSprites: Int = 10
         draw(texture, position.x, position.y)
     }
 
+    // Draw a colored quad without texture
+    fun drawQuad(x: Float, y: Float, width: Float, height: Float, rotation: Float = 0f) {
+        if (!isDrawing) {
+            throw IllegalStateException("SpriteBatch is not drawing")
+        }
+
+        // Check if we need to flush due to texture change (use -1 for colored quads)
+        if (currentTextureId != -1) {
+            if (spriteCount > 0) {
+                flush()
+            }
+            currentTextureId = -1
+        }
+
+        // Check if we have space for another sprite
+        if (spriteCount >= vertices.size / VERTICES_PER_SPRITE_WITH_VALUES) {
+            flush()
+        }
+
+        // Calculate rotated vertices
+        val centerX = x + width / 2
+        val centerY = y + height / 2
+
+        val cos = kotlin.math.cos(rotation)
+        val sin = kotlin.math.sin(rotation)
+
+        // Bottom-left
+        val blX = centerX + (-width/2) * cos - (-height/2) * sin
+        val blY = centerY + (-width/2) * sin + (-height/2) * cos
+
+        // Bottom-right
+        val brX = centerX + (width/2) * cos - (-height/2) * sin
+        val brY = centerY + (width/2) * sin + (-height/2) * cos
+
+        // Top-right
+        val trX = centerX + (width/2) * cos - (height/2) * sin
+        val trY = centerY + (width/2) * sin + (height/2) * cos
+
+        // Top-left
+        val tlX = centerX + (-width/2) * cos - (height/2) * sin
+        val tlY = centerY + (-width/2) * sin + (height/2) * cos
+
+        // Add sprite vertices (texture coordinates are ignored for colored quads)
+        val vertexIndex = spriteCount * VERTICES_PER_SPRITE_WITH_VALUES
+
+        // Bottom-left
+        vertices[vertexIndex] = blX
+        vertices[vertexIndex + 1] = blY
+        vertices[vertexIndex + 2] = 0f
+        vertices[vertexIndex + 3] = 0f
+
+        // Bottom-right
+        vertices[vertexIndex + 4] = brX
+        vertices[vertexIndex + 5] = brY
+        vertices[vertexIndex + 6] = 0f
+        vertices[vertexIndex + 7] = 0f
+
+        // Top-right
+        vertices[vertexIndex + 8] = trX
+        vertices[vertexIndex + 9] = trY
+        vertices[vertexIndex + 10] = 0f
+        vertices[vertexIndex + 11] = 0f
+
+        // Top-left
+        vertices[vertexIndex + 12] = tlX
+        vertices[vertexIndex + 13] = tlY
+        vertices[vertexIndex + 14] = 0f
+        vertices[vertexIndex + 15] = 0f
+
+        spriteCount++
+    }
+
     private fun flush() {
         if (spriteCount == 0) return
 

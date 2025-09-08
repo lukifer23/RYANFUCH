@@ -1,0 +1,18 @@
+{
+    "duck": {
+        "sprite_sheet": "duck_sprites.png",
+        "frame_size": [32, 32],
+        "animations": {
+            "fly": {
+                "frames": [0, 1],
+                "duration": 0.2,
+                "loop": true
+            },
+            "fall": {
+                "frames": [2],
+                "duration": 1.0,
+                "loop": false
+            }
+        }
+    }
+} 

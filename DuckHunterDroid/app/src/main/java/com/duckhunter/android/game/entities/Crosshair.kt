@@ -1,111 +1,137 @@
 package com.duckhunter.android.game.entities
 
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import com.duckhunter.android.game.core.graphics.SpriteBatch
 import com.duckhunter.android.game.core.graphics.Vector2
 
 class Crosshair {
 
     // Position
-    private var position = Vector2(960f, 540f) // Center of screen initially
-    private var targetPosition = Vector2(960f, 540f)
+    var position = Vector2(0f, 0f)
 
-    // Visual properties
-    private val size = Vector2(60f, 60f)
-    private val hitRadius = 25f
+    // Crosshair properties
+    private val size = 60f
+    private val hitRadius = 25f // Larger hit detection radius
+    private var flashTimer = 0f
+    private val flashDuration = 0.1f // 100ms flash
 
-    // Animation properties
-    private var scale = 1f
-    private var alpha = 1f
-    private var hitEffectTime = 0f
-    private val hitEffectDuration = 0.2f
+    // Paint objects for drawing
+    private val crosshairPaint = Paint().apply {
+        color = Color.WHITE
+        style = Paint.Style.STROKE
+        strokeWidth = 2f
+        isAntiAlias = true
+    }
 
-    // Colors
-    private val normalColor = floatArrayOf(1f, 1f, 1f, 1f) // White
-    private val hitColor = floatArrayOf(1f, 0.5f, 0f, 1f) // Orange/red
+    private val hitRadiusPaint = Paint().apply {
+        color = Color.WHITE
+        style = Paint.Style.STROKE
+        strokeWidth = 1f
+        alpha = 50 // Semi-transparent
+        isAntiAlias = true
+    }
+
+    private val centerPaint = Paint().apply {
+        color = Color.WHITE
+        style = Paint.Style.FILL
+        isAntiAlias = true
+    }
+
+    private val flashPaint = Paint().apply {
+        color = Color.RED
+        style = Paint.Style.FILL
+        isAntiAlias = true
+    }
 
     fun update(deltaTime: Float) {
-        // Smooth movement towards target position
-        val smoothing = 10f // Higher = faster following
-        val deltaX = (targetPosition.x - position.x) * smoothing * deltaTime
-        val deltaY = (targetPosition.y - position.y) * smoothing * deltaTime
-
-        position.x += deltaX
-        position.y += deltaY
-
-        // Update hit effect
-        if (hitEffectTime > 0f) {
-            hitEffectTime -= deltaTime
-            scale = 1f + (hitEffectTime / hitEffectDuration) * 0.3f
-            alpha = 0.8f + (hitEffectTime / hitEffectDuration) * 0.2f
-        } else {
-            scale = 1f
-            alpha = 1f
+        // Update flash timer
+        if (flashTimer > 0f) {
+            flashTimer -= deltaTime
         }
     }
 
-    fun render(spriteBatch: SpriteBatch) {
-        // Set color based on hit effect
-        val currentColor = if (hitEffectTime > 0f) hitColor else normalColor
-        spriteBatch.setColor(currentColor[0], currentColor[1], currentColor[2], currentColor[3] * alpha)
-
-        // Render crosshair as geometric shapes
-        // In full implementation, would use texture
-        renderCrosshairGeometry(spriteBatch)
-    }
-
-    private fun renderCrosshairGeometry(spriteBatch: SpriteBatch) {
-        val scaledSize = Vector2(size.x * scale, size.y * scale)
-        val halfWidth = scaledSize.x / 2f
-        val halfHeight = scaledSize.y / 2f
-
-        // Render hit radius circle (semi-transparent)
-        spriteBatch.setColor(1f, 1f, 1f, 0.3f * alpha)
-        // Circle rendering would be implemented with geometry shader or multiple quads
-
-        // Reset to main color
-        val currentColor = if (hitEffectTime > 0f) hitColor else normalColor
-        spriteBatch.setColor(currentColor[0], currentColor[1], currentColor[2], currentColor[3] * alpha)
-
-        // Render cross lines
-        val lineThickness = 2f * scale
-        val lineLength = 15f * scale
-
-        // Horizontal line
-        // Top
-        // Vertical line
-        // Left
-
-        // Center dot
-        val dotSize = 6f * scale
-    }
-
     fun setPosition(x: Float, y: Float) {
-        targetPosition.set(x, y)
+        position.set(x, y)
     }
 
-    fun setPosition(position: Vector2) {
-        targetPosition.set(position)
+    fun flash() {
+        flashTimer = flashDuration
     }
-
-    fun triggerHitEffect() {
-        hitEffectTime = hitEffectDuration
-    }
-
-    fun getPosition(): Vector2 = position
 
     fun getHitRadius(): Float = hitRadius
 
-    fun getBounds(): android.graphics.RectF {
-        return android.graphics.RectF(
-            position.x - hitRadius,
-            position.y - hitRadius,
-            position.x + hitRadius,
-            position.y + hitRadius
-        )
+    fun render(spriteBatch: SpriteBatch) {
+        val centerX = position.x
+        val centerY = position.y
+
+        // Choose color based on flash state
+        val color = if (flashTimer > 0f) {
+            floatArrayOf(1f, 0f, 0f, 1f) // Red flash
+        } else {
+            floatArrayOf(1f, 1f, 1f, 1f) // White normal
+        }
+
+        spriteBatch.setColor(color[0], color[1], color[2], color[3])
+
+        // Draw outer circle (hit radius indicator)
+        spriteBatch.drawQuad(centerX - hitRadius, centerY - hitRadius, hitRadius * 2, hitRadius * 2)
+
+        // Draw inner circle
+        spriteBatch.setColor(color[0], color[1], color[2], 0.8f)
+        spriteBatch.drawQuad(centerX - 15f, centerY - 15f, 30f, 30f)
+
+        // Draw cross lines (horizontal and vertical)
+        val lineThickness = 3f
+        // Horizontal line
+        spriteBatch.drawQuad(centerX - 12f, centerY - lineThickness/2, 24f, lineThickness)
+        // Vertical line
+        spriteBatch.drawQuad(centerX - lineThickness/2, centerY - 12f, lineThickness, 24f)
+
+        // Draw center dot
+        spriteBatch.setColor(color[0], color[1], color[2], 1f)
+        spriteBatch.drawQuad(centerX - 3f, centerY - 3f, 6f, 6f)
     }
 
-    fun isPointInHitRadius(point: Vector2): Boolean {
-        val distance = position.distance(point)
+    fun render(canvas: Canvas, showHitRadius: Boolean = false) {
+        val centerX = position.x
+        val centerY = position.y
+
+        // Draw hit radius indicator when aiming at targets
+        if (showHitRadius) {
+            canvas.drawCircle(centerX, centerY, hitRadius, hitRadiusPaint)
+        }
+
+        // Choose paint based on flash state
+        val currentPaint = if (flashTimer > 0f) flashPaint else crosshairPaint
+
+        // Draw outer circle (hit radius indicator)
+        canvas.drawCircle(centerX, centerY, hitRadius, currentPaint.apply {
+            style = Paint.Style.STROKE
+            strokeWidth = 2f
+        })
+
+        // Draw inner circle
+        canvas.drawCircle(centerX, centerY, 15f, currentPaint.apply {
+            style = Paint.Style.STROKE
+            strokeWidth = 1f
+        })
+
+        // Draw cross lines (longer for better visibility)
+        canvas.drawLine(centerX, centerY - 12f, centerX, centerY - 3f, currentPaint.apply { strokeWidth = 2f })
+        canvas.drawLine(centerX, centerY + 3f, centerX, centerY + 12f, currentPaint.apply { strokeWidth = 2f })
+        canvas.drawLine(centerX - 12f, centerY, centerX - 3f, centerY, currentPaint.apply { strokeWidth = 2f })
+        canvas.drawLine(centerX + 3f, centerY, centerX + 12f, centerY, currentPaint.apply { strokeWidth = 2f })
+
+        // Draw center dot
+        canvas.drawCircle(centerX, centerY, 3f, currentPaint.apply { style = Paint.Style.FILL })
+    }
+
+    fun isPointInHitRadius(targetX: Float, targetY: Float): Boolean {
+        val dx = targetX - position.x
+        val dy = targetY - position.y
+        val distance = kotlin.math.sqrt(dx * dx + dy * dy)
         return distance <= hitRadius
     }
 }
