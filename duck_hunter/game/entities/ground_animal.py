@@ -40,46 +40,49 @@ class GroundAnimal(pygame.sprite.Sprite):
 
     def get_animal_type_data(self, animal_type):
         """Returns the data for a specific animal type."""
+        # Scale base sizes based on display scaling
+        scale_factor = const.UI_SCALE
+        
         animal_types = {
             "deer": {
                 "points": 200,
                 "speed_range": (80, 150),
-                "size": (60, 40),
+                "size": (int(60 * scale_factor), int(40 * scale_factor)),
                 "color": (139, 69, 19),  # Brown
                 "spawn_weight": 30
             },
             "moose": {
                 "points": 500,
                 "speed_range": (60, 120),
-                "size": (80, 60),
+                "size": (int(80 * scale_factor), int(60 * scale_factor)),
                 "color": (101, 67, 33),  # Dark brown
                 "spawn_weight": 20
             },
             "dinosaur": {
                 "points": 1000,
                 "speed_range": (100, 200),
-                "size": (100, 80),
+                "size": (int(100 * scale_factor), int(80 * scale_factor)),
                 "color": (34, 139, 34),  # Forest green
                 "spawn_weight": 15
             },
             "rabbit": {
                 "points": 150,
                 "speed_range": (120, 180),
-                "size": (40, 30),
+                "size": (int(40 * scale_factor), int(30 * scale_factor)),
                 "color": (160, 82, 45),  # Light brown
                 "spawn_weight": 40
             },
             "bear": {
                 "points": 800,
                 "speed_range": (70, 130),
-                "size": (90, 70),
+                "size": (int(90 * scale_factor), int(70 * scale_factor)),
                 "color": (101, 67, 33),  # Dark brown
                 "spawn_weight": 10
             },
             "wolf": {
                 "points": 600,
                 "speed_range": (90, 160),
-                "size": (70, 50),
+                "size": (int(70 * scale_factor), int(50 * scale_factor)),
                 "color": (105, 105, 105),  # Gray
                 "spawn_weight": 25
             }
@@ -117,15 +120,21 @@ class GroundAnimal(pygame.sprite.Sprite):
         frames = []
         size = self.type_data["size"]
         
+    def create_deer_animation(self, color):
+        """Creates deer walking animation frames."""
+        frames = []
+        size = self.type_data["size"]
+        scale_factor = const.UI_SCALE
+        
         for frame in range(4):  # 4 walking frames
             image = pygame.Surface(size, pygame.SRCALPHA)
             
             # Body (more realistic shape)
-            pygame.draw.ellipse(image, color, (8, 18, 40, 25))
+            pygame.draw.ellipse(image, color, (int(8 * scale_factor), int(18 * scale_factor), int(40 * scale_factor), int(25 * scale_factor)))
             # Head (more detailed)
-            pygame.draw.ellipse(image, color, (42, 15, 20, 18))
+            pygame.draw.ellipse(image, color, (int(42 * scale_factor), int(15 * scale_factor), int(20 * scale_factor), int(18 * scale_factor)))
             # Neck
-            pygame.draw.ellipse(image, color, (35, 20, 12, 15))
+            pygame.draw.ellipse(image, color, (int(35 * scale_factor), int(20 * scale_factor), int(12 * scale_factor), int(15 * scale_factor)))
             
             # Legs with walking animation
             leg_color = (max(0, color[0]-20), max(0, color[1]-20), max(0, color[2]-20))
@@ -137,34 +146,34 @@ class GroundAnimal(pygame.sprite.Sprite):
             ]
             
             offsets = leg_offsets[frame]
-            pygame.draw.rect(image, leg_color, (12, 35 + offsets[0], 5, 12))
-            pygame.draw.rect(image, leg_color, (22, 35 + offsets[1], 5, 12))
-            pygame.draw.rect(image, leg_color, (32, 35 + offsets[2], 5, 12))
-            pygame.draw.rect(image, leg_color, (42, 35 + offsets[3], 5, 12))
+            pygame.draw.rect(image, leg_color, (int(12 * scale_factor), int(35 * scale_factor + offsets[0] * scale_factor), int(5 * scale_factor), int(12 * scale_factor)))
+            pygame.draw.rect(image, leg_color, (int(22 * scale_factor), int(35 * scale_factor + offsets[1] * scale_factor), int(5 * scale_factor), int(12 * scale_factor)))
+            pygame.draw.rect(image, leg_color, (int(32 * scale_factor), int(35 * scale_factor + offsets[2] * scale_factor), int(5 * scale_factor), int(12 * scale_factor)))
+            pygame.draw.rect(image, leg_color, (int(42 * scale_factor), int(35 * scale_factor + offsets[3] * scale_factor), int(5 * scale_factor), int(12 * scale_factor)))
             
             # Hooves
-            pygame.draw.rect(image, (50, 50, 50), (12, 45 + offsets[0], 5, 3))
-            pygame.draw.rect(image, (50, 50, 50), (22, 45 + offsets[1], 5, 3))
-            pygame.draw.rect(image, (50, 50, 50), (32, 45 + offsets[2], 5, 3))
-            pygame.draw.rect(image, (50, 50, 50), (42, 45 + offsets[3], 5, 3))
+            pygame.draw.rect(image, (50, 50, 50), (int(12 * scale_factor), int(45 * scale_factor + offsets[0] * scale_factor), int(5 * scale_factor), int(3 * scale_factor)))
+            pygame.draw.rect(image, (50, 50, 50), (int(22 * scale_factor), int(45 * scale_factor + offsets[1] * scale_factor), int(5 * scale_factor), int(3 * scale_factor)))
+            pygame.draw.rect(image, (50, 50, 50), (int(32 * scale_factor), int(45 * scale_factor + offsets[2] * scale_factor), int(5 * scale_factor), int(3 * scale_factor)))
+            pygame.draw.rect(image, (50, 50, 50), (int(42 * scale_factor), int(45 * scale_factor + offsets[3] * scale_factor), int(5 * scale_factor), int(3 * scale_factor)))
             
             # Antlers (more detailed)
             antler_color = (139, 69, 19)
-            pygame.draw.line(image, antler_color, (50, 12), (45, 5), 3)
-            pygame.draw.line(image, antler_color, (50, 12), (55, 5), 3)
-            pygame.draw.line(image, antler_color, (45, 5), (42, 2), 2)
-            pygame.draw.line(image, antler_color, (55, 5), (58, 2), 2)
+            pygame.draw.line(image, antler_color, (int(50 * scale_factor), int(12 * scale_factor)), (int(45 * scale_factor), int(5 * scale_factor)), max(1, int(3 * scale_factor)))
+            pygame.draw.line(image, antler_color, (int(50 * scale_factor), int(12 * scale_factor)), (int(55 * scale_factor), int(5 * scale_factor)), max(1, int(3 * scale_factor)))
+            pygame.draw.line(image, antler_color, (int(45 * scale_factor), int(5 * scale_factor)), (int(42 * scale_factor), int(2 * scale_factor)), max(1, int(2 * scale_factor)))
+            pygame.draw.line(image, antler_color, (int(55 * scale_factor), int(5 * scale_factor)), (int(58 * scale_factor), int(2 * scale_factor)), max(1, int(2 * scale_factor)))
             
             # Eyes
-            pygame.draw.circle(image, (0, 0, 0), (52, 20), 2)
-            pygame.draw.circle(image, (0, 0, 0), (48, 20), 2)
+            pygame.draw.circle(image, (0, 0, 0), (int(52 * scale_factor), int(20 * scale_factor)), max(1, int(2 * scale_factor)))
+            pygame.draw.circle(image, (0, 0, 0), (int(48 * scale_factor), int(20 * scale_factor)), max(1, int(2 * scale_factor)))
             
             # Nose
-            pygame.draw.circle(image, (0, 0, 0), (50, 26), 1)
+            pygame.draw.circle(image, (0, 0, 0), (int(50 * scale_factor), int(26 * scale_factor)), max(1, int(1 * scale_factor)))
             
             # Ears
-            pygame.draw.ellipse(image, color, (45, 12, 6, 8))
-            pygame.draw.ellipse(image, color, (51, 12, 6, 8))
+            pygame.draw.ellipse(image, color, (int(45 * scale_factor), int(12 * scale_factor), int(6 * scale_factor), int(8 * scale_factor)))
+            pygame.draw.ellipse(image, color, (int(51 * scale_factor), int(12 * scale_factor), int(6 * scale_factor), int(8 * scale_factor)))
             
             frames.append(image)
         
@@ -174,16 +183,17 @@ class GroundAnimal(pygame.sprite.Sprite):
         """Creates moose walking animation frames."""
         frames = []
         size = self.type_data["size"]
+        scale_factor = const.UI_SCALE
         
         for frame in range(4):  # 4 walking frames
             image = pygame.Surface(size, pygame.SRCALPHA)
             
             # Body (larger, more realistic)
-            pygame.draw.ellipse(image, color, (12, 22, 50, 35))
+            pygame.draw.ellipse(image, color, (int(12 * scale_factor), int(22 * scale_factor), int(50 * scale_factor), int(35 * scale_factor)))
             # Head (larger, more detailed)
-            pygame.draw.ellipse(image, color, (55, 18, 25, 22))
+            pygame.draw.ellipse(image, color, (int(55 * scale_factor), int(18 * scale_factor), int(25 * scale_factor), int(22 * scale_factor)))
             # Neck (thick)
-            pygame.draw.ellipse(image, color, (40, 25, 20, 20))
+            pygame.draw.ellipse(image, color, (int(40 * scale_factor), int(25 * scale_factor), int(20 * scale_factor), int(20 * scale_factor)))
             
             # Legs with walking animation
             leg_color = (max(0, color[0]-25), max(0, color[1]-25), max(0, color[2]-25))
@@ -195,39 +205,39 @@ class GroundAnimal(pygame.sprite.Sprite):
             ]
             
             offsets = leg_offsets[frame]
-            pygame.draw.rect(image, leg_color, (18, 45 + offsets[0], 8, 18))
-            pygame.draw.rect(image, leg_color, (30, 45 + offsets[1], 8, 18))
-            pygame.draw.rect(image, leg_color, (50, 45 + offsets[2], 8, 18))
-            pygame.draw.rect(image, leg_color, (62, 45 + offsets[3], 8, 18))
+            pygame.draw.rect(image, leg_color, (int(18 * scale_factor), int((45 + offsets[0]) * scale_factor), int(8 * scale_factor), int(18 * scale_factor)))
+            pygame.draw.rect(image, leg_color, (int(30 * scale_factor), int((45 + offsets[1]) * scale_factor), int(8 * scale_factor), int(18 * scale_factor)))
+            pygame.draw.rect(image, leg_color, (int(50 * scale_factor), int((45 + offsets[2]) * scale_factor), int(8 * scale_factor), int(18 * scale_factor)))
+            pygame.draw.rect(image, leg_color, (int(62 * scale_factor), int((45 + offsets[3]) * scale_factor), int(8 * scale_factor), int(18 * scale_factor)))
             
             # Hooves (larger)
-            pygame.draw.rect(image, (40, 40, 40), (18, 60 + offsets[0], 8, 4))
-            pygame.draw.rect(image, (40, 40, 40), (30, 60 + offsets[1], 8, 4))
-            pygame.draw.rect(image, (40, 40, 40), (50, 60 + offsets[2], 8, 4))
-            pygame.draw.rect(image, (40, 40, 40), (62, 60 + offsets[3], 8, 4))
+            pygame.draw.rect(image, (40, 40, 40), (int(18 * scale_factor), int((60 + offsets[0]) * scale_factor), int(8 * scale_factor), int(4 * scale_factor)))
+            pygame.draw.rect(image, (40, 40, 40), (int(30 * scale_factor), int((60 + offsets[1]) * scale_factor), int(8 * scale_factor), int(4 * scale_factor)))
+            pygame.draw.rect(image, (40, 40, 40), (int(50 * scale_factor), int((60 + offsets[2]) * scale_factor), int(8 * scale_factor), int(4 * scale_factor)))
+            pygame.draw.rect(image, (40, 40, 40), (int(62 * scale_factor), int((60 + offsets[3]) * scale_factor), int(8 * scale_factor), int(4 * scale_factor)))
             
             # Antlers (larger, more impressive)
             antler_color = (139, 69, 19)
-            pygame.draw.line(image, antler_color, (65, 12), (55, 2), 4)
-            pygame.draw.line(image, antler_color, (65, 12), (75, 2), 4)
-            pygame.draw.line(image, antler_color, (55, 2), (50, -3), 3)
-            pygame.draw.line(image, antler_color, (75, 2), (80, -3), 3)
-            pygame.draw.line(image, antler_color, (50, -3), (45, -8), 2)
-            pygame.draw.line(image, antler_color, (80, -3), (85, -8), 2)
+            pygame.draw.line(image, antler_color, (int(65 * scale_factor), int(12 * scale_factor)), (int(55 * scale_factor), int(2 * scale_factor)), max(1, int(4 * scale_factor)))
+            pygame.draw.line(image, antler_color, (int(65 * scale_factor), int(12 * scale_factor)), (int(75 * scale_factor), int(2 * scale_factor)), max(1, int(4 * scale_factor)))
+            pygame.draw.line(image, antler_color, (int(55 * scale_factor), int(2 * scale_factor)), (int(50 * scale_factor), int(-3 * scale_factor)), max(1, int(3 * scale_factor)))
+            pygame.draw.line(image, antler_color, (int(75 * scale_factor), int(2 * scale_factor)), (int(80 * scale_factor), int(-3 * scale_factor)), max(1, int(3 * scale_factor)))
+            pygame.draw.line(image, antler_color, (int(50 * scale_factor), int(-3 * scale_factor)), (int(45 * scale_factor), int(-8 * scale_factor)), max(1, int(2 * scale_factor)))
+            pygame.draw.line(image, antler_color, (int(80 * scale_factor), int(-3 * scale_factor)), (int(85 * scale_factor), int(-8 * scale_factor)), max(1, int(2 * scale_factor)))
             
             # Eyes
-            pygame.draw.circle(image, (0, 0, 0), (68, 25), 3)
-            pygame.draw.circle(image, (0, 0, 0), (62, 25), 3)
+            pygame.draw.circle(image, (0, 0, 0), (int(68 * scale_factor), int(25 * scale_factor)), max(1, int(3 * scale_factor)))
+            pygame.draw.circle(image, (0, 0, 0), (int(62 * scale_factor), int(25 * scale_factor)), max(1, int(3 * scale_factor)))
             
             # Nose (larger)
-            pygame.draw.ellipse(image, (0, 0, 0), (65, 32, 6, 4))
+            pygame.draw.ellipse(image, (0, 0, 0), (int(65 * scale_factor), int(32 * scale_factor), int(6 * scale_factor), int(4 * scale_factor)))
             
             # Ears (larger)
-            pygame.draw.ellipse(image, color, (58, 15, 8, 10))
-            pygame.draw.ellipse(image, color, (66, 15, 8, 10))
+            pygame.draw.ellipse(image, color, (int(58 * scale_factor), int(15 * scale_factor), int(8 * scale_factor), int(10 * scale_factor)))
+            pygame.draw.ellipse(image, color, (int(66 * scale_factor), int(15 * scale_factor), int(8 * scale_factor), int(10 * scale_factor)))
             
             # Dewlap (moose feature)
-            pygame.draw.ellipse(image, color, (45, 35, 15, 12))
+            pygame.draw.ellipse(image, color, (int(45 * scale_factor), int(35 * scale_factor), int(15 * scale_factor), int(12 * scale_factor)))
             
             frames.append(image)
         
@@ -237,17 +247,18 @@ class GroundAnimal(pygame.sprite.Sprite):
         """Creates dinosaur walking animation frames."""
         frames = []
         size = self.type_data["size"]
+        scale_factor = const.UI_SCALE
         
         for frame in range(4):  # 4 walking frames
             image = pygame.Surface(size, pygame.SRCALPHA)
             
             # Body (largest, more realistic)
-            pygame.draw.ellipse(image, color, (15, 28, 60, 45))
+            pygame.draw.ellipse(image, color, (int(15 * scale_factor), int(28 * scale_factor), int(60 * scale_factor), int(45 * scale_factor)))
             # Head (more detailed)
-            pygame.draw.ellipse(image, color, (70, 25, 25, 20))
+            pygame.draw.ellipse(image, color, (int(70 * scale_factor), int(25 * scale_factor), int(25 * scale_factor), int(20 * scale_factor)))
             # Tail (longer, more dynamic)
-            pygame.draw.ellipse(image, color, (2, 32, 25, 18))
-            pygame.draw.ellipse(image, color, (0, 35, 15, 12))
+            pygame.draw.ellipse(image, color, (int(2 * scale_factor), int(32 * scale_factor), int(25 * scale_factor), int(18 * scale_factor)))
+            pygame.draw.ellipse(image, color, (int(0 * scale_factor), int(35 * scale_factor), int(15 * scale_factor), int(12 * scale_factor)))
             
             # Legs with walking animation
             leg_color = (max(0, color[0]-30), max(0, color[1]-30), max(0, color[2]-30))
@@ -259,43 +270,48 @@ class GroundAnimal(pygame.sprite.Sprite):
             ]
             
             offsets = leg_offsets[frame]
-            pygame.draw.rect(image, leg_color, (22, 60 + offsets[0], 10, 25))
-            pygame.draw.rect(image, leg_color, (38, 60 + offsets[1], 10, 25))
-            pygame.draw.rect(image, leg_color, (58, 60 + offsets[2], 10, 25))
-            pygame.draw.rect(image, leg_color, (74, 60 + offsets[3], 10, 25))
+            pygame.draw.rect(image, leg_color, (int(22 * scale_factor), int((60 + offsets[0]) * scale_factor), int(10 * scale_factor), int(25 * scale_factor)))
+            pygame.draw.rect(image, leg_color, (int(38 * scale_factor), int((60 + offsets[1]) * scale_factor), int(10 * scale_factor), int(25 * scale_factor)))
+            pygame.draw.rect(image, leg_color, (int(58 * scale_factor), int((60 + offsets[2]) * scale_factor), int(10 * scale_factor), int(25 * scale_factor)))
+            pygame.draw.rect(image, leg_color, (int(74 * scale_factor), int((60 + offsets[3]) * scale_factor), int(10 * scale_factor), int(25 * scale_factor)))
             
             # Feet (claws)
             foot_color = (60, 60, 60)
-            pygame.draw.rect(image, foot_color, (22, 82 + offsets[0], 10, 6))
-            pygame.draw.rect(image, foot_color, (38, 82 + offsets[1], 10, 6))
-            pygame.draw.rect(image, foot_color, (58, 82 + offsets[2], 10, 6))
-            pygame.draw.rect(image, foot_color, (74, 82 + offsets[3], 10, 6))
+            pygame.draw.rect(image, foot_color, (int(22 * scale_factor), int((82 + offsets[0]) * scale_factor), int(10 * scale_factor), int(6 * scale_factor)))
+            pygame.draw.rect(image, foot_color, (int(38 * scale_factor), int((82 + offsets[1]) * scale_factor), int(10 * scale_factor), int(6 * scale_factor)))
+            pygame.draw.rect(image, foot_color, (int(58 * scale_factor), int((82 + offsets[2]) * scale_factor), int(10 * scale_factor), int(6 * scale_factor)))
+            pygame.draw.rect(image, foot_color, (int(74 * scale_factor), int((82 + offsets[3]) * scale_factor), int(10 * scale_factor), int(6 * scale_factor)))
             
             # Spikes on back (more detailed)
             spike_color = (0, 80, 0)
             for i in range(6):
-                x = 20 + i * 12
-                pygame.draw.polygon(image, spike_color, [(x, 25), (x-4, 12), (x+4, 12)])
-                pygame.draw.polygon(image, (0, 60, 0), [(x, 25), (x-2, 16), (x+2, 16)])
+                x = int((20 + i * 12) * scale_factor)
+                y_base = int(25 * scale_factor)
+                spike_height = int(13 * scale_factor)
+                pygame.draw.polygon(image, spike_color, [(x, y_base), (x - int(4 * scale_factor), y_base - spike_height), (x + int(4 * scale_factor), y_base - spike_height)])
+                pygame.draw.polygon(image, (0, 60, 0), [(x, y_base), (x - int(2 * scale_factor), y_base - int(9 * scale_factor)), (x + int(2 * scale_factor), y_base - int(9 * scale_factor))])
             
             # Eyes (larger, more menacing)
-            pygame.draw.circle(image, (255, 0, 0), (82, 30), 4)
-            pygame.draw.circle(image, (0, 0, 0), (82, 30), 2)
-            pygame.draw.circle(image, (255, 0, 0), (78, 30), 4)
-            pygame.draw.circle(image, (0, 0, 0), (78, 30), 2)
+            pygame.draw.circle(image, (255, 0, 0), (int(82 * scale_factor), int(30 * scale_factor)), max(1, int(4 * scale_factor)))
+            pygame.draw.circle(image, (0, 0, 0), (int(82 * scale_factor), int(30 * scale_factor)), max(1, int(2 * scale_factor)))
+            pygame.draw.circle(image, (255, 0, 0), (int(78 * scale_factor), int(30 * scale_factor)), max(1, int(4 * scale_factor)))
+            pygame.draw.circle(image, (0, 0, 0), (int(78 * scale_factor), int(30 * scale_factor)), max(1, int(2 * scale_factor)))
             
             # Nostrils
-            pygame.draw.circle(image, (0, 0, 0), (85, 35), 2)
-            pygame.draw.circle(image, (0, 0, 0), (88, 35), 2)
+            pygame.draw.circle(image, (0, 0, 0), (int(85 * scale_factor), int(35 * scale_factor)), max(1, int(2 * scale_factor)))
+            pygame.draw.circle(image, (0, 0, 0), (int(88 * scale_factor), int(35 * scale_factor)), max(1, int(2 * scale_factor)))
             
             # Teeth (sharp)
             tooth_color = (255, 255, 255)
-            pygame.draw.polygon(image, tooth_color, [(80, 40), (78, 45), (82, 45)])
-            pygame.draw.polygon(image, tooth_color, [(85, 40), (83, 45), (87, 45)])
+            tooth_x1 = int(80 * scale_factor)
+            tooth_y1 = int(40 * scale_factor)
+            pygame.draw.polygon(image, tooth_color, [(tooth_x1, tooth_y1), (tooth_x1 - int(2 * scale_factor), tooth_y1 + int(5 * scale_factor)), (tooth_x1 + int(2 * scale_factor), tooth_y1 + int(5 * scale_factor))])
+            tooth_x2 = int(85 * scale_factor)
+            pygame.draw.polygon(image, tooth_color, [(tooth_x2, tooth_y1), (tooth_x2 - int(2 * scale_factor), tooth_y1 + int(5 * scale_factor)), (tooth_x2 + int(2 * scale_factor), tooth_y1 + int(5 * scale_factor))])
             
             # Arms (small)
-            pygame.draw.ellipse(image, color, (45, 40, 8, 15))
-            pygame.draw.ellipse(image, color, (55, 40, 8, 15))
+            pygame.draw.ellipse(image, color, (int(45 * scale_factor), int(40 * scale_factor), int(8 * scale_factor), int(15 * scale_factor)))
+            pygame.draw.ellipse(image, color, (int(55 * scale_factor), int(40 * scale_factor), int(8 * scale_factor), int(15 * scale_factor)))
             
             frames.append(image)
         
@@ -305,33 +321,34 @@ class GroundAnimal(pygame.sprite.Sprite):
         """Creates rabbit hopping animation frames."""
         frames = []
         size = self.type_data["size"]
+        scale_factor = const.UI_SCALE
         
         for frame in range(3):  # 3 hopping frames
             image = pygame.Surface(size, pygame.SRCALPHA)
             
             # Body
-            pygame.draw.ellipse(image, color, (8, 15, 25, 18))
+            pygame.draw.ellipse(image, color, (int(8 * scale_factor), int(15 * scale_factor), int(25 * scale_factor), int(18 * scale_factor)))
             # Head
-            pygame.draw.circle(image, color, (35, 18), 8)
+            pygame.draw.circle(image, color, (int(35 * scale_factor), int(18 * scale_factor)), max(1, int(8 * scale_factor)))
             
             # Legs with hopping animation
             leg_color = (max(0, color[0]-15), max(0, color[1]-15), max(0, color[2]-15))
             hop_offsets = [0, -3, 0]  # Hop up and down
             
-            pygame.draw.rect(image, leg_color, (12, 25 + hop_offsets[frame], 3, 8))
-            pygame.draw.rect(image, leg_color, (18, 25 + hop_offsets[frame], 3, 8))
-            pygame.draw.rect(image, leg_color, (24, 25 + hop_offsets[frame], 3, 8))
+            pygame.draw.rect(image, leg_color, (int(12 * scale_factor), int((25 + hop_offsets[frame]) * scale_factor), max(1, int(3 * scale_factor)), max(1, int(8 * scale_factor))))
+            pygame.draw.rect(image, leg_color, (int(18 * scale_factor), int((25 + hop_offsets[frame]) * scale_factor), max(1, int(3 * scale_factor)), max(1, int(8 * scale_factor))))
+            pygame.draw.rect(image, leg_color, (int(24 * scale_factor), int((25 + hop_offsets[frame]) * scale_factor), max(1, int(3 * scale_factor)), max(1, int(8 * scale_factor))))
             
             # Ears
-            pygame.draw.ellipse(image, color, (32, 8, 4, 12))
-            pygame.draw.ellipse(image, color, (36, 8, 4, 12))
+            pygame.draw.ellipse(image, color, (int(32 * scale_factor), int(8 * scale_factor), max(1, int(4 * scale_factor)), max(1, int(12 * scale_factor))))
+            pygame.draw.ellipse(image, color, (int(36 * scale_factor), int(8 * scale_factor), max(1, int(4 * scale_factor)), max(1, int(12 * scale_factor))))
             
             # Eyes
-            pygame.draw.circle(image, (0, 0, 0), (33, 16), 1)
-            pygame.draw.circle(image, (0, 0, 0), (37, 16), 1)
+            pygame.draw.circle(image, (0, 0, 0), (int(33 * scale_factor), int(16 * scale_factor)), max(1, int(1 * scale_factor)))
+            pygame.draw.circle(image, (0, 0, 0), (int(37 * scale_factor), int(16 * scale_factor)), max(1, int(1 * scale_factor)))
             
             # Nose
-            pygame.draw.circle(image, (0, 0, 0), (35, 20), 1)
+            pygame.draw.circle(image, (0, 0, 0), (int(35 * scale_factor), int(20 * scale_factor)), max(1, int(1 * scale_factor)))
             
             frames.append(image)
         
@@ -341,14 +358,15 @@ class GroundAnimal(pygame.sprite.Sprite):
         """Creates bear walking animation frames."""
         frames = []
         size = self.type_data["size"]
+        scale_factor = const.UI_SCALE
         
         for frame in range(4):  # 4 walking frames
             image = pygame.Surface(size, pygame.SRCALPHA)
             
             # Body
-            pygame.draw.ellipse(image, color, (15, 20, 50, 40))
+            pygame.draw.ellipse(image, color, (int(15 * scale_factor), int(20 * scale_factor), int(50 * scale_factor), int(40 * scale_factor)))
             # Head
-            pygame.draw.circle(image, color, (65, 25), 18)
+            pygame.draw.circle(image, color, (int(65 * scale_factor), int(25 * scale_factor)), max(1, int(18 * scale_factor)))
             
             # Legs with walking animation
             leg_color = (max(0, color[0]-25), max(0, color[1]-25), max(0, color[2]-25))
@@ -360,27 +378,27 @@ class GroundAnimal(pygame.sprite.Sprite):
             ]
             
             offsets = leg_offsets[frame]
-            pygame.draw.rect(image, leg_color, (20, 50 + offsets[0], 8, 15))
-            pygame.draw.rect(image, leg_color, (35, 50 + offsets[1], 8, 15))
-            pygame.draw.rect(image, leg_color, (50, 50 + offsets[2], 8, 15))
-            pygame.draw.rect(image, leg_color, (65, 50 + offsets[3], 8, 15))
+            pygame.draw.rect(image, leg_color, (int(20 * scale_factor), int((50 + offsets[0]) * scale_factor), max(1, int(8 * scale_factor)), max(1, int(15 * scale_factor))))
+            pygame.draw.rect(image, leg_color, (int(35 * scale_factor), int((50 + offsets[1]) * scale_factor), max(1, int(8 * scale_factor)), max(1, int(15 * scale_factor))))
+            pygame.draw.rect(image, leg_color, (int(50 * scale_factor), int((50 + offsets[2]) * scale_factor), max(1, int(8 * scale_factor)), max(1, int(15 * scale_factor))))
+            pygame.draw.rect(image, leg_color, (int(65 * scale_factor), int((50 + offsets[3]) * scale_factor), max(1, int(8 * scale_factor)), max(1, int(15 * scale_factor))))
             
             # Paws
-            pygame.draw.rect(image, (40, 40, 40), (20, 62 + offsets[0], 8, 4))
-            pygame.draw.rect(image, (40, 40, 40), (35, 62 + offsets[1], 8, 4))
-            pygame.draw.rect(image, (40, 40, 40), (50, 62 + offsets[2], 8, 4))
-            pygame.draw.rect(image, (40, 40, 40), (65, 62 + offsets[3], 8, 4))
+            pygame.draw.rect(image, (40, 40, 40), (int(20 * scale_factor), int((62 + offsets[0]) * scale_factor), max(1, int(8 * scale_factor)), max(1, int(4 * scale_factor))))
+            pygame.draw.rect(image, (40, 40, 40), (int(35 * scale_factor), int((62 + offsets[1]) * scale_factor), max(1, int(8 * scale_factor)), max(1, int(4 * scale_factor))))
+            pygame.draw.rect(image, (40, 40, 40), (int(50 * scale_factor), int((62 + offsets[2]) * scale_factor), max(1, int(8 * scale_factor)), max(1, int(4 * scale_factor))))
+            pygame.draw.rect(image, (40, 40, 40), (int(65 * scale_factor), int((62 + offsets[3]) * scale_factor), max(1, int(8 * scale_factor)), max(1, int(4 * scale_factor))))
             
             # Ears
-            pygame.draw.circle(image, color, (58, 12), 6)
-            pygame.draw.circle(image, color, (72, 12), 6)
+            pygame.draw.circle(image, color, (int(58 * scale_factor), int(12 * scale_factor)), max(1, int(6 * scale_factor)))
+            pygame.draw.circle(image, color, (int(72 * scale_factor), int(12 * scale_factor)), max(1, int(6 * scale_factor)))
             
             # Eyes
-            pygame.draw.circle(image, (0, 0, 0), (62, 22), 2)
-            pygame.draw.circle(image, (0, 0, 0), (68, 22), 2)
+            pygame.draw.circle(image, (0, 0, 0), (int(62 * scale_factor), int(22 * scale_factor)), max(1, int(2 * scale_factor)))
+            pygame.draw.circle(image, (0, 0, 0), (int(68 * scale_factor), int(22 * scale_factor)), max(1, int(2 * scale_factor)))
             
             # Nose
-            pygame.draw.circle(image, (0, 0, 0), (65, 28), 2)
+            pygame.draw.circle(image, (0, 0, 0), (int(65 * scale_factor), int(28 * scale_factor)), max(1, int(2 * scale_factor)))
             
             frames.append(image)
         
@@ -390,14 +408,15 @@ class GroundAnimal(pygame.sprite.Sprite):
         """Creates wolf walking animation frames."""
         frames = []
         size = self.type_data["size"]
+        scale_factor = const.UI_SCALE
         
         for frame in range(4):  # 4 walking frames
             image = pygame.Surface(size, pygame.SRCALPHA)
             
             # Body
-            pygame.draw.ellipse(image, color, (10, 20, 45, 25))
+            pygame.draw.ellipse(image, color, (int(10 * scale_factor), int(20 * scale_factor), int(45 * scale_factor), int(25 * scale_factor)))
             # Head
-            pygame.draw.ellipse(image, color, (50, 18, 18, 16))
+            pygame.draw.ellipse(image, color, (int(50 * scale_factor), int(18 * scale_factor), int(18 * scale_factor), int(16 * scale_factor)))
             
             # Legs with walking animation
             leg_color = (max(0, color[0]-20), max(0, color[1]-20), max(0, color[2]-20))
@@ -409,30 +428,30 @@ class GroundAnimal(pygame.sprite.Sprite):
             ]
             
             offsets = leg_offsets[frame]
-            pygame.draw.rect(image, leg_color, (15, 35 + offsets[0], 4, 12))
-            pygame.draw.rect(image, leg_color, (25, 35 + offsets[1], 4, 12))
-            pygame.draw.rect(image, leg_color, (35, 35 + offsets[2], 4, 12))
-            pygame.draw.rect(image, leg_color, (45, 35 + offsets[3], 4, 12))
+            pygame.draw.rect(image, leg_color, (int(15 * scale_factor), int((35 + offsets[0]) * scale_factor), max(1, int(4 * scale_factor)), max(1, int(12 * scale_factor))))
+            pygame.draw.rect(image, leg_color, (int(25 * scale_factor), int((35 + offsets[1]) * scale_factor), max(1, int(4 * scale_factor)), max(1, int(12 * scale_factor))))
+            pygame.draw.rect(image, leg_color, (int(35 * scale_factor), int((35 + offsets[2]) * scale_factor), max(1, int(4 * scale_factor)), max(1, int(12 * scale_factor))))
+            pygame.draw.rect(image, leg_color, (int(45 * scale_factor), int((35 + offsets[3]) * scale_factor), max(1, int(4 * scale_factor)), max(1, int(12 * scale_factor))))
             
             # Paws
-            pygame.draw.rect(image, (30, 30, 30), (15, 45 + offsets[0], 4, 3))
-            pygame.draw.rect(image, (30, 30, 30), (25, 45 + offsets[1], 4, 3))
-            pygame.draw.rect(image, (30, 30, 30), (35, 45 + offsets[2], 4, 3))
-            pygame.draw.rect(image, (30, 30, 30), (45, 45 + offsets[3], 4, 3))
+            pygame.draw.rect(image, (30, 30, 30), (int(15 * scale_factor), int((45 + offsets[0]) * scale_factor), max(1, int(4 * scale_factor)), max(1, int(3 * scale_factor))))
+            pygame.draw.rect(image, (30, 30, 30), (int(25 * scale_factor), int((45 + offsets[1]) * scale_factor), max(1, int(4 * scale_factor)), max(1, int(3 * scale_factor))))
+            pygame.draw.rect(image, (30, 30, 30), (int(35 * scale_factor), int((45 + offsets[2]) * scale_factor), max(1, int(4 * scale_factor)), max(1, int(3 * scale_factor))))
+            pygame.draw.rect(image, (30, 30, 30), (int(45 * scale_factor), int((45 + offsets[3]) * scale_factor), max(1, int(4 * scale_factor)), max(1, int(3 * scale_factor))))
             
             # Ears
-            pygame.draw.ellipse(image, color, (52, 12, 5, 8))
-            pygame.draw.ellipse(image, color, (58, 12, 5, 8))
+            pygame.draw.ellipse(image, color, (int(52 * scale_factor), int(12 * scale_factor), max(1, int(5 * scale_factor)), max(1, int(8 * scale_factor))))
+            pygame.draw.ellipse(image, color, (int(58 * scale_factor), int(12 * scale_factor), max(1, int(5 * scale_factor)), max(1, int(8 * scale_factor))))
             
             # Eyes
-            pygame.draw.circle(image, (0, 0, 0), (55, 20), 2)
-            pygame.draw.circle(image, (0, 0, 0), (61, 20), 2)
+            pygame.draw.circle(image, (0, 0, 0), (int(55 * scale_factor), int(20 * scale_factor)), max(1, int(2 * scale_factor)))
+            pygame.draw.circle(image, (0, 0, 0), (int(61 * scale_factor), int(20 * scale_factor)), max(1, int(2 * scale_factor)))
             
             # Nose
-            pygame.draw.circle(image, (0, 0, 0), (58, 25), 1)
+            pygame.draw.circle(image, (0, 0, 0), (int(58 * scale_factor), int(25 * scale_factor)), max(1, int(1 * scale_factor)))
             
             # Tail
-            pygame.draw.ellipse(image, color, (5, 25, 12, 8))
+            pygame.draw.ellipse(image, color, (int(5 * scale_factor), int(25 * scale_factor), max(1, int(12 * scale_factor)), max(1, int(8 * scale_factor))))
             
             frames.append(image)
         

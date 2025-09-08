@@ -7,40 +7,23 @@
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
-	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<string>com.duckhunter.ios</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>$(PRODUCT_NAME)</string>
+	<string>Duck Hunter</string>
 	<key>CFBundlePackageType</key>
-	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
+	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>UIApplicationSceneManifest</key>
-	<dict>
-		<key>UIApplicationSupportsMultipleScenes</key>
-		<false/>
-		<key>UISceneConfigurations</key>
-		<dict>
-			<key>UIWindowSceneSessionRoleApplication</key>
-			<array>
-				<dict>
-					<key>UISceneConfigurationName</key>
-					<string>Default Configuration</string>
-					<key>UISceneDelegateClassName</key>
-					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
-					<key>UISceneStoryboardFile</key>
-					<string>Main</string>
-				</dict>
-			</array>
-		</dict>
-	</dict>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIMainStoryboardFile</key>
+	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
@@ -55,5 +38,100 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+
+	<!-- Game Center Configuration -->
+	<key>GKLeaderboards</key>
+	<array>
+		<dict>
+			<key>GKLeaderboardIdentifier</key>
+			<string>com.duckhunter.highscore</string>
+			<key>GKLeaderboardType</key>
+			<string>GKLeaderboardTypeClassic</string>
+		</dict>
+		<dict>
+			<key>GKLeaderboardIdentifier</key>
+			<string>com.duckhunter.totalducks</string>
+			<key>GKLeaderboardType</key>
+			<string>GKLeaderboardTypeClassic</string>
+		</dict>
+		<dict>
+			<key>GKLeaderboardIdentifier</key>
+			<string>com.duckhunter.accuracy</string>
+			<key>GKLeaderboardType</key>
+			<string>GKLeaderboardTypeClassic</string>
+		</dict>
+	</array>
+	<key>GKAchievements</key>
+	<array>
+		<dict>
+			<key>GKAchievementIdentifier</key>
+			<string>com.duckhunter.firstduck</string>
+			<key>GKAchievementPoints</key>
+			<integer>5</integer>
+		</dict>
+		<dict>
+			<key>GKAchievementIdentifier</key>
+			<string>com.duckhunter.hundredducks</string>
+			<key>GKAchievementPoints</key>
+			<integer>10</integer>
+		</dict>
+		<dict>
+			<key>GKAchievementIdentifier</key>
+			<string>com.duckhunter.perfectround</string>
+			<key>GKAchievementPoints</key>
+			<integer>15</integer>
+		</dict>
+		<dict>
+			<key>GKAchievementIdentifier</key>
+			<string>com.duckhunter.sharpshooter</string>
+			<key>GKAchievementPoints</key>
+			<integer>20</integer>
+		</dict>
+	</array>
+
+	<!-- iCloud Configuration -->
+	<key>NSUbiquitousContainers</key>
+	<dict>
+		<key>iCloud.com.duckhunter</key>
+		<dict>
+			<key>NSUbiquitousContainerIsDocumentScopePublic</key>
+			<true/>
+			<key>NSUbiquitousContainerName</key>
+			<string>Duck Hunter Data</string>
+			<key>NSUbiquitousContainerSupportedFolderLevels</key>
+			<string>Any</string>
+		</dict>
+	</dict>
+
+	<!-- Privacy Permissions -->
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Duck Hunter uses the microphone for voice commands and game audio feedback.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Duck Hunter uses the camera for augmented reality features.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Duck Hunter can save screenshots to your photo library.</string>
+
+	<!-- App Transport Security -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
+
+	<!-- Background Modes -->
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+	</array>
+
+	<!-- App Categories -->
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.games</string>
+
+	<!-- Minimum OS Version -->
+	<key>MinimumOSVersion</key>
+	<string>15.0</string>
 </dict>
 </plist>

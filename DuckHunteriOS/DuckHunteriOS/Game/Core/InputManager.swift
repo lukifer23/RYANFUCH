@@ -6,54 +6,56 @@
 //  Copyright © 2024 Duck Hunter. All rights reserved.
 //
 
+#if os(iOS)
 import UIKit
+#endif
 
 class InputManager {
 
     // MARK: - Properties
-    private var touchStartTime: TimeInterval = 0
-    private var touchStartLocation: CGPoint = .zero
-    private var currentTouchLocation: CGPoint = .zero
+    private var inputStartTime: TimeInterval = 0
+    private var inputStartLocation: CGPoint = .zero
+    private var currentInputLocation: CGPoint = .zero
 
-    private var isTouching = false
+    private var isInputActive = false
     private var isDragging = false
 
-    // Touch sensitivity settings
+    // Input sensitivity settings
     private var crosshairSensitivity: Float = 1.0
     private var aimAssistEnabled = true
     private var aimAssistRadius: CGFloat = 30.0
 
-    // MARK: - Touch Handling
-    func handleTouchBegan(at location: CGPoint, timestamp: TimeInterval) {
-        touchStartTime = timestamp
-        touchStartLocation = location
-        currentTouchLocation = location
-        isTouching = true
+    // MARK: - Input Handling
+    func handleInputBegan(at location: CGPoint, timestamp: TimeInterval) {
+        inputStartTime = timestamp
+        inputStartLocation = location
+        currentInputLocation = location
+        isInputActive = true
         isDragging = false
     }
 
-    func handleTouchMoved(to location: CGPoint) {
-        currentTouchLocation = location
+    func handleInputMoved(to location: CGPoint) {
+        currentInputLocation = location
 
         // Check if this is a drag gesture
-        let distance = touchStartLocation.distance(to: location)
+        let distance = inputStartLocation.distance(to: location)
         if distance > 10 { // Minimum drag distance
             isDragging = true
         }
     }
 
-    func handleTouchEnded(at location: CGPoint, timestamp: TimeInterval) {
-        let touchDuration = timestamp - touchStartTime
-        currentTouchLocation = location
+    func handleInputEnded(at location: CGPoint, timestamp: TimeInterval) {
+        let inputDuration = timestamp - inputStartTime
+        currentInputLocation = location
 
         // Determine gesture type
-        if touchDuration < 0.3 && !isDragging {
+        if inputDuration < 0.3 && !isDragging {
             handleTap(at: location)
         } else if isDragging {
-            handleDrag(from: touchStartLocation, to: location)
+            handleDrag(from: inputStartLocation, to: location)
         }
 
-        isTouching = false
+        isInputActive = false
         isDragging = false
     }
 
@@ -117,13 +119,13 @@ class InputManager {
 
     // MARK: - Crosshair Position
     func getCrosshairPosition() -> CGPoint {
-        return currentTouchLocation
+        return currentInputLocation
     }
 
     func getSmoothedCrosshairPosition() -> CGPoint {
         // Apply sensitivity and smoothing
         let sensitivity = CGFloat(crosshairSensitivity)
-        return currentTouchLocation * sensitivity
+        return currentInputLocation * sensitivity
     }
 
     // MARK: - Aim Assist
@@ -165,18 +167,18 @@ class InputManager {
         return (aimAssistEnabled, aimAssistRadius)
     }
 
-    // MARK: - Touch State
-    func isCurrentlyTouching() -> Bool {
-        return isTouching
+    // MARK: - Input State
+    func isCurrentlyInputActive() -> Bool {
+        return isInputActive
     }
 
     func isCurrentlyDragging() -> Bool {
         return isDragging
     }
 
-    var currentTouchDuration: TimeInterval {
-        if isTouching {
-            return CACurrentMediaTime() - touchStartTime
+    var currentInputDuration: TimeInterval {
+        if isInputActive {
+            return CACurrentMediaTime() - inputStartTime
         }
         return 0
     }

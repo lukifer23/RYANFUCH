@@ -77,6 +77,7 @@ class GroundAnimal: SKSpriteNode {
     private func createProceduralTexture(for state: AnimalState, frame: Int) -> SKTexture {
         let size = CGSize(width: 64, height: 48)
 
+        #if os(iOS)
         let renderer = UIGraphicsImageRenderer(size: size)
 
         let image = renderer.image { context in
@@ -92,11 +93,41 @@ class GroundAnimal: SKSpriteNode {
                 drawHitFrame(colors: colors, in: cgContext, size: size)
             }
         }
+        #else
+        // For macOS, create a simple colored rectangle as placeholder
+        let image = createSimplePlaceholderImage(size: size, for: state)
+        #endif
 
         return SKTexture(image: image)
     }
 
+    #if os(macOS)
+    private func createSimplePlaceholderImage(size: CGSize, for state: AnimalState) -> NSImage {
+        let image = NSImage(size: size)
+        image.lockFocus()
+
+        // Create a simple colored rectangle
+        let color: NSColor
+        switch state {
+        case .walking:
+            color = NSColor.green
+        case .hit:
+            color = NSColor.red
+        }
+
+        color.setFill()
+        NSRect(x: 0, y: 0, width: size.width, height: size.height).fill()
+
+        image.unlockFocus()
+        return image
+    }
+    #endif
+
+    #if os(iOS)
     private func getAnimalColorScheme() -> [UIColor] {
+    #else
+    private func getAnimalColorScheme() -> [NSColor] {
+    #endif
         switch animalType {
         case .rabbit:
             return [UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0), // body

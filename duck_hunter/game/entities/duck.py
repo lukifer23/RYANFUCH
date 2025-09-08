@@ -117,6 +117,10 @@ class Duck(pygame.sprite.Sprite):
 
     def create_procedural_duck_fly(self):
         """Creates detailed duck sprites with flapping animation."""
+        # Scale sprite dimensions based on display scaling
+        sprite_width = int(48 * const.UI_SCALE)
+        sprite_height = int(32 * const.UI_SCALE)
+        
         # Choose colors based on duck type
         duck_types = [
             {"body": (139, 69, 19), "head": (160, 82, 45), "wing": (222, 184, 135), "beak": (255, 165, 0), "eye": (0, 0, 0)},  # Brown duck
@@ -128,42 +132,73 @@ class Duck(pygame.sprite.Sprite):
         colors = duck_types[self.type_data["color_scheme"]]
         
         # Frame 1: Wings up
-        frame1 = pygame.Surface((48, 32), pygame.SRCALPHA)
+        frame1 = pygame.Surface((sprite_width, sprite_height), pygame.SRCALPHA)
+        
+        # Scale all drawing coordinates
+        scale_factor = const.UI_SCALE
+        
         # Body (main ellipse)
-        pygame.draw.ellipse(frame1, colors["body"], (4, 12, 32, 16))
+        body_rect = (int(4 * scale_factor), int(12 * scale_factor), int(32 * scale_factor), int(16 * scale_factor))
+        pygame.draw.ellipse(frame1, colors["body"], body_rect)
+        
         # Head
-        pygame.draw.circle(frame1, colors["head"], (36, 12), 8)
+        head_center = (int(36 * scale_factor), int(12 * scale_factor))
+        head_radius = int(8 * scale_factor)
+        pygame.draw.circle(frame1, colors["head"], head_center, head_radius)
+        
         # Wing (up position)
-        pygame.draw.ellipse(frame1, colors["wing"], (12, 8, 16, 12))
+        wing_rect = (int(12 * scale_factor), int(8 * scale_factor), int(16 * scale_factor), int(12 * scale_factor))
+        pygame.draw.ellipse(frame1, colors["wing"], wing_rect)
+        
         # Beak
-        pygame.draw.polygon(frame1, colors["beak"], [(44, 12), (48, 10), (48, 14)])
+        beak_points = [
+            (int(44 * scale_factor), int(12 * scale_factor)),
+            (int(48 * scale_factor), int(10 * scale_factor)),
+            (int(48 * scale_factor), int(14 * scale_factor))
+        ]
+        pygame.draw.polygon(frame1, colors["beak"], beak_points)
+        
         # Eye
-        pygame.draw.circle(frame1, colors["eye"], (38, 9), 2)
+        eye_center = (int(38 * scale_factor), int(9 * scale_factor))
+        eye_radius = max(1, int(2 * scale_factor))
+        pygame.draw.circle(frame1, colors["eye"], eye_center, eye_radius)
+        
         # Wing detail
+        wing_detail_rect = (int(14 * scale_factor), int(10 * scale_factor), int(12 * scale_factor), int(8 * scale_factor))
         wing_detail_color = (max(0, colors["wing"][0]-20), max(0, colors["wing"][1]-20), max(0, colors["wing"][2]-20))
-        pygame.draw.ellipse(frame1, wing_detail_color, (14, 10, 12, 8))
+        pygame.draw.ellipse(frame1, wing_detail_color, wing_detail_rect)
         
         # Frame 2: Wings down
-        frame2 = pygame.Surface((48, 32), pygame.SRCALPHA)
+        frame2 = pygame.Surface((sprite_width, sprite_height), pygame.SRCALPHA)
+        
         # Body (main ellipse)
-        pygame.draw.ellipse(frame2, colors["body"], (4, 12, 32, 16))
+        pygame.draw.ellipse(frame2, colors["body"], body_rect)
+        
         # Head
-        pygame.draw.circle(frame2, colors["head"], (36, 12), 8)
+        pygame.draw.circle(frame2, colors["head"], head_center, head_radius)
+        
         # Wing (down position)
-        pygame.draw.ellipse(frame2, colors["wing"], (12, 16, 16, 12))
+        wing_down_rect = (int(12 * scale_factor), int(12 * scale_factor), int(16 * scale_factor), int(12 * scale_factor))
+        pygame.draw.ellipse(frame2, colors["wing"], wing_down_rect)
+        
         # Beak
-        pygame.draw.polygon(frame2, colors["beak"], [(44, 12), (48, 10), (48, 14)])
+        pygame.draw.polygon(frame2, colors["beak"], beak_points)
+        
         # Eye
-        pygame.draw.circle(frame2, colors["eye"], (38, 9), 2)
+        pygame.draw.circle(frame2, colors["eye"], eye_center, eye_radius)
+        
         # Wing detail
-        wing_detail_color = (max(0, colors["wing"][0]-20), max(0, colors["wing"][1]-20), max(0, colors["wing"][2]-20))
-        pygame.draw.ellipse(frame2, wing_detail_color, (14, 18, 12, 8))
-
+        pygame.draw.ellipse(frame2, wing_detail_color, wing_detail_rect)
+        
         return [frame1, frame2]
 
     def create_procedural_duck_fall(self):
         """Creates a falling duck with X eyes."""
-        frame = pygame.Surface((48, 32), pygame.SRCALPHA)
+        # Scale sprite dimensions based on display scaling
+        sprite_width = int(48 * const.UI_SCALE)
+        sprite_height = int(32 * const.UI_SCALE)
+        
+        frame = pygame.Surface((sprite_width, sprite_height), pygame.SRCALPHA)
         # Use the same colors as the flying duck
         duck_types = [
             {"body": (139, 69, 19), "head": (160, 82, 45), "wing": (222, 184, 135), "beak": (255, 165, 0), "eye": (0, 0, 0)},  # Brown duck
@@ -174,18 +209,36 @@ class Duck(pygame.sprite.Sprite):
         
         colors = duck_types[self.type_data["color_scheme"]]
         
+        # Scale all drawing coordinates
+        scale_factor = const.UI_SCALE
+        
         # Body (main ellipse)
-        pygame.draw.ellipse(frame, colors["body"], (4, 12, 32, 16))
+        body_rect = (int(4 * scale_factor), int(12 * scale_factor), int(32 * scale_factor), int(16 * scale_factor))
+        pygame.draw.ellipse(frame, colors["body"], body_rect)
+        
         # Head
-        pygame.draw.circle(frame, colors["head"], (36, 12), 8)
+        head_center = (int(36 * scale_factor), int(12 * scale_factor))
+        head_radius = int(8 * scale_factor)
+        pygame.draw.circle(frame, colors["head"], head_center, head_radius)
+        
         # Wings (spread out for falling)
-        pygame.draw.ellipse(frame, colors["wing"], (8, 10, 20, 8))
-        pygame.draw.ellipse(frame, colors["wing"], (8, 16, 20, 8))
+        wing1_rect = (int(8 * scale_factor), int(10 * scale_factor), int(20 * scale_factor), int(8 * scale_factor))
+        wing2_rect = (int(8 * scale_factor), int(16 * scale_factor), int(20 * scale_factor), int(8 * scale_factor))
+        pygame.draw.ellipse(frame, colors["wing"], wing1_rect)
+        pygame.draw.ellipse(frame, colors["wing"], wing2_rect)
+        
         # Beak
-        pygame.draw.polygon(frame, colors["beak"], [(44, 12), (48, 10), (48, 14)])
+        beak_points = [
+            (int(44 * scale_factor), int(12 * scale_factor)),
+            (int(48 * scale_factor), int(10 * scale_factor)),
+            (int(48 * scale_factor), int(14 * scale_factor))
+        ]
+        pygame.draw.polygon(frame, colors["beak"], beak_points)
+        
         # X eyes (dead)
-        pygame.draw.line(frame, (255, 0, 0), (34, 8), (38, 12), 2)
-        pygame.draw.line(frame, (255, 0, 0), (38, 8), (34, 12), 2)
+        line_width = max(1, int(2 * scale_factor))
+        pygame.draw.line(frame, (255, 0, 0), (int(34 * scale_factor), int(8 * scale_factor)), (int(38 * scale_factor), int(12 * scale_factor)), line_width)
+        pygame.draw.line(frame, (255, 0, 0), (int(38 * scale_factor), int(8 * scale_factor)), (int(34 * scale_factor), int(12 * scale_factor)), line_width)
         
         return [frame]
 

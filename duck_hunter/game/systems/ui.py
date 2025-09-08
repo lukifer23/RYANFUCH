@@ -11,18 +11,22 @@ import os
 
 class UISystem:
     def __init__(self):
+        # Scale font sizes based on display scaling
+        base_font_size = int(36 * const.UI_SCALE)
+        small_font_size = int(24 * const.UI_SCALE)
+        
         self.font = None
         self.small_font = None
         try:
             # In a real scenario, you'd have a .ttf file in your assets/fonts folder
             font_path = os.path.join(const.FONTS_PATH, "default_font.ttf")
-            self.font = resources.load_font(font_path, 36)
-            self.small_font = resources.load_font(font_path, 24)
+            self.font = resources.load_font(font_path, base_font_size)
+            self.small_font = resources.load_font(font_path, small_font_size)
         except Exception:
             # Fallback to Pygame's default font if the custom one fails
             print("Default font not found. Falling back to pygame default.")
-            self.font = pygame.font.Font(None, 48)
-            self.small_font = pygame.font.Font(None, 32)
+            self.font = pygame.font.Font(None, base_font_size)
+            self.small_font = pygame.font.Font(None, small_font_size)
         
         # FPS tracking
         self.fps_history = []
@@ -32,7 +36,10 @@ class UISystem:
         """Renders the current score to the screen."""
         score_text = f"Score: {score}"
         text_surface = self.font.render(score_text, True, const.WHITE)
-        text_rect = text_surface.get_rect(topleft=(20, 20))
+        # Scale the position based on the UI scaling factor
+        x_pos = int(20 * const.UI_SCALE)
+        y_pos = int(20 * const.UI_SCALE)
+        text_rect = text_surface.get_rect(topleft=(x_pos, y_pos))
         surface.blit(text_surface, text_rect)
 
     def draw_lives(self, surface, lives):
@@ -42,7 +49,10 @@ class UISystem:
         else:
             lives_text = f"Lives: {lives}"
         text_surface = self.font.render(lives_text, True, const.WHITE)
-        text_rect = text_surface.get_rect(topright=(const.SCREEN_WIDTH - 20, 20))
+        # Scale the position based on the UI scaling factor
+        x_pos = const.SCREEN_WIDTH - int(20 * const.UI_SCALE) - text_surface.get_width()
+        y_pos = int(20 * const.UI_SCALE)
+        text_rect = text_surface.get_rect(topleft=(x_pos, y_pos))
         surface.blit(text_surface, text_rect)
 
     def draw_ammo(self, surface, weapon_data):
@@ -56,14 +66,20 @@ class UISystem:
             ammo_text = "Reloading..."
         
         text_surface = self.font.render(ammo_text, True, const.WHITE)
-        text_rect = text_surface.get_rect(bottomleft=(20, const.SCREEN_HEIGHT - 20))
+        # Scale the position based on the UI scaling factor
+        x_pos = int(20 * const.UI_SCALE)
+        y_pos = const.SCREEN_HEIGHT - int(20 * const.UI_SCALE) - text_surface.get_height()
+        text_rect = text_surface.get_rect(topleft=(x_pos, y_pos))
         surface.blit(text_surface, text_rect)
 
     def draw_game_mode(self, surface, game_mode):
         """Renders the current game mode to the screen."""
         mode_text = f"Mode: {game_mode.upper()}"
         text_surface = self.font.render(mode_text, True, const.WHITE)
-        text_rect = text_surface.get_rect(bottomright=(const.SCREEN_WIDTH - 20, const.SCREEN_HEIGHT - 20))
+        # Scale the position based on the UI scaling factor
+        x_pos = const.SCREEN_WIDTH - int(20 * const.UI_SCALE) - text_surface.get_width()
+        y_pos = const.SCREEN_HEIGHT - int(20 * const.UI_SCALE) - text_surface.get_height()
+        text_rect = text_surface.get_rect(topleft=(x_pos, y_pos))
         surface.blit(text_surface, text_rect)
 
     def draw_timer(self, surface, elapsed_time, time_limit):
@@ -83,10 +99,13 @@ class UISystem:
                 color = const.WHITE
             
             text_surface = self.small_font.render(timer_text, True, color)
-            text_rect = text_surface.get_rect(bottomright=(const.SCREEN_WIDTH - 20, const.SCREEN_HEIGHT - 60))
+            # Scale the position based on the UI scaling factor
+            x_pos = const.SCREEN_WIDTH - int(20 * const.UI_SCALE) - text_surface.get_width()
+            y_pos = const.SCREEN_HEIGHT - int(60 * const.UI_SCALE) - text_surface.get_height()
+            text_rect = text_surface.get_rect(topleft=(x_pos, y_pos))
             
             # Add background for better readability
-            bg_rect = text_rect.inflate(8, 4)
+            bg_rect = text_rect.inflate(int(8 * const.UI_SCALE), int(4 * const.UI_SCALE))
             bg_surface = pygame.Surface(bg_rect.size, pygame.SRCALPHA)
             bg_surface.fill((0, 0, 0, 100))
             

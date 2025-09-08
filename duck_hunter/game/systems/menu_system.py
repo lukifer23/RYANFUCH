@@ -9,7 +9,13 @@ from game.systems.background import ParallaxBackground
 
 class Button:
     def __init__(self, x, y, width, height, text, font, callback=None):
-        self.rect = pygame.Rect(x, y, width, height)
+        # Scale button dimensions and position
+        scaled_x = int(x * const.UI_SCALE)
+        scaled_y = int(y * const.UI_SCALE)
+        scaled_width = int(width * const.UI_SCALE)
+        scaled_height = int(height * const.UI_SCALE)
+        
+        self.rect = pygame.Rect(scaled_x, scaled_y, scaled_width, scaled_height)
         self.text = text
         self.font = font
         self.callback = callback
@@ -44,13 +50,17 @@ class MenuSystem:
         self.current_state = "main_menu"
         self.background = ParallaxBackground()
         
+        # Scale font sizes based on display scaling
+        base_font_size = int(48 * const.UI_SCALE)
+        title_font_size = int(72 * const.UI_SCALE)
+        
         # Load font
         try:
-            self.font = pygame.font.Font(None, 48)
-            self.title_font = pygame.font.Font(None, 72)
+            self.font = pygame.font.Font(None, base_font_size)
+            self.title_font = pygame.font.Font(None, title_font_size)
         except:
-            self.font = pygame.font.Font(None, 48)
-            self.title_font = pygame.font.Font(None, 72)
+            self.font = pygame.font.Font(None, base_font_size)
+            self.title_font = pygame.font.Font(None, title_font_size)
         
         # Initialize buttons for different states
         self.setup_main_menu()
@@ -61,7 +71,8 @@ class MenuSystem:
         
     def setup_main_menu(self):
         """Creates buttons for the main menu."""
-        center_x = const.SCREEN_WIDTH // 2
+        # Use design resolution coordinates, Button class will scale them
+        center_x = const.DESIGN_WIDTH // 2
         button_width = 200
         button_height = 50
         button_spacing = 70
@@ -81,7 +92,8 @@ class MenuSystem:
     
     def setup_game_over_menu(self):
         """Creates buttons for the game over screen."""
-        center_x = const.SCREEN_WIDTH // 2
+        # Use design resolution coordinates, Button class will scale them
+        center_x = const.DESIGN_WIDTH // 2
         button_width = 200
         button_height = 50
         button_spacing = 70
@@ -97,7 +109,8 @@ class MenuSystem:
 
     def setup_settings_menu(self):
         """Creates buttons for the settings menu."""
-        center_x = const.SCREEN_WIDTH // 2
+        # Use design resolution coordinates, Button class will scale them
+        center_x = const.DESIGN_WIDTH // 2
         button_width = 200
         button_height = 50
         button_spacing = 70
@@ -120,7 +133,8 @@ class MenuSystem:
 
     def setup_high_scores_menu(self):
         """Creates buttons for the high scores menu."""
-        center_x = const.SCREEN_WIDTH // 2
+        # Use design resolution coordinates, Button class will scale them
+        center_x = const.DESIGN_WIDTH // 2
         button_width = 200
         button_height = 50
         
@@ -131,7 +145,8 @@ class MenuSystem:
 
     def setup_mode_selection_menu(self):
         """Creates buttons for the mode selection menu."""
-        center_x = const.SCREEN_WIDTH // 2
+        # Use design resolution coordinates, Button class will scale them
+        center_x = const.DESIGN_WIDTH // 2
         button_width = 250
         button_height = 50
         button_spacing = 70
@@ -213,12 +228,16 @@ class MenuSystem:
 
     def draw_main_menu(self):
         """Draws the main menu."""
-        # Title
+        # Title - use scaled coordinates
         title_text = self.title_font.render("DUCK HUNTER", True, const.WHITE)
-        title_rect = title_text.get_rect(center=(const.SCREEN_WIDTH//2, 150))
+        title_x = int(const.SCREEN_WIDTH // 2)
+        title_y = int(150 * const.UI_SCALE)
+        title_rect = title_text.get_rect(center=(title_x, title_y))
         
         # Semi-transparent background for title
-        bg_rect = title_rect.inflate(40, 20)
+        bg_padding_x = int(40 * const.UI_SCALE)
+        bg_padding_y = int(20 * const.UI_SCALE)
+        bg_rect = title_rect.inflate(bg_padding_x, bg_padding_y)
         bg_surface = pygame.Surface(bg_rect.size, pygame.SRCALPHA)
         bg_surface.fill((0, 0, 0, 150))
         
@@ -231,17 +250,23 @@ class MenuSystem:
 
     def draw_game_over_menu(self, final_score):
         """Draws the game over screen."""
-        # Game Over text
+        # Game Over text - use scaled coordinates
         game_over_text = self.title_font.render("GAME OVER", True, const.WHITE)
-        game_over_rect = game_over_text.get_rect(center=(const.SCREEN_WIDTH//2, 200))
+        game_over_x = int(const.SCREEN_WIDTH // 2)
+        game_over_y = int(200 * const.UI_SCALE)
+        game_over_rect = game_over_text.get_rect(center=(game_over_x, game_over_y))
         
-        # Final score
+        # Final score - use scaled coordinates
         score_text = self.font.render(f"Final Score: {final_score}", True, const.WHITE)
-        score_rect = score_text.get_rect(center=(const.SCREEN_WIDTH//2, 280))
+        score_x = int(const.SCREEN_WIDTH // 2)
+        score_y = int(280 * const.UI_SCALE)
+        score_rect = score_text.get_rect(center=(score_x, score_y))
         
         # Semi-transparent backgrounds
+        bg_padding_x = int(40 * const.UI_SCALE)
+        bg_padding_y = int(20 * const.UI_SCALE)
         for text, rect in [(game_over_text, game_over_rect), (score_text, score_rect)]:
-            bg_rect = rect.inflate(40, 20)
+            bg_rect = rect.inflate(bg_padding_x, bg_padding_y)
             bg_surface = pygame.Surface(bg_rect.size, pygame.SRCALPHA)
             bg_surface.fill((0, 0, 0, 150))
             self.screen.blit(bg_surface, bg_rect)
@@ -253,12 +278,16 @@ class MenuSystem:
 
     def draw_settings_menu(self):
         """Draws the settings menu."""
-        # Title
+        # Title - use scaled coordinates
         title_text = self.title_font.render("SETTINGS", True, const.WHITE)
-        title_rect = title_text.get_rect(center=(const.SCREEN_WIDTH//2, 150))
+        title_x = int(const.SCREEN_WIDTH // 2)
+        title_y = int(150 * const.UI_SCALE)
+        title_rect = title_text.get_rect(center=(title_x, title_y))
         
         # Semi-transparent background for title
-        bg_rect = title_rect.inflate(40, 20)
+        bg_padding_x = int(40 * const.UI_SCALE)
+        bg_padding_y = int(20 * const.UI_SCALE)
+        bg_rect = title_rect.inflate(bg_padding_x, bg_padding_y)
         bg_surface = pygame.Surface(bg_rect.size, pygame.SRCALPHA)
         bg_surface.fill((0, 0, 0, 150))
         
@@ -271,23 +300,29 @@ class MenuSystem:
 
     def draw_high_scores_menu(self):
         """Draws the high scores menu."""
-        # Title
+        # Title - use scaled coordinates
         title_text = self.title_font.render("HIGH SCORES", True, const.WHITE)
-        title_rect = title_text.get_rect(center=(const.SCREEN_WIDTH//2, 150))
+        title_x = int(const.SCREEN_WIDTH // 2)
+        title_y = int(150 * const.UI_SCALE)
+        title_rect = title_text.get_rect(center=(title_x, title_y))
         
         # Semi-transparent background for title
-        bg_rect = title_rect.inflate(40, 20)
+        bg_padding_x = int(40 * const.UI_SCALE)
+        bg_padding_y = int(20 * const.UI_SCALE)
+        bg_rect = title_rect.inflate(bg_padding_x, bg_padding_y)
         bg_surface = pygame.Surface(bg_rect.size, pygame.SRCALPHA)
         bg_surface.fill((0, 0, 0, 150))
         
         self.screen.blit(bg_surface, bg_rect)
         self.screen.blit(title_text, title_rect)
         
-        # No scores message
+        # No scores message - use scaled coordinates
         no_scores_text = self.font.render("No scores yet!", True, const.WHITE)
-        no_scores_rect = no_scores_text.get_rect(center=(const.SCREEN_WIDTH//2, 300))
+        no_scores_x = int(const.SCREEN_WIDTH // 2)
+        no_scores_y = int(300 * const.UI_SCALE)
+        no_scores_rect = no_scores_text.get_rect(center=(no_scores_x, no_scores_y))
         
-        bg_rect2 = no_scores_rect.inflate(40, 20)
+        bg_rect2 = no_scores_rect.inflate(bg_padding_x, bg_padding_y)
         bg_surface2 = pygame.Surface(bg_rect2.size, pygame.SRCALPHA)
         bg_surface2.fill((0, 0, 0, 150))
         
@@ -300,12 +335,16 @@ class MenuSystem:
 
     def draw_mode_selection_menu(self):
         """Draws the mode selection menu."""
-        # Title
+        # Title - use scaled coordinates
         title_text = self.title_font.render("SELECT GAME MODE", True, const.WHITE)
-        title_rect = title_text.get_rect(center=(const.SCREEN_WIDTH//2, 150))
+        title_x = int(const.SCREEN_WIDTH // 2)
+        title_y = int(150 * const.UI_SCALE)
+        title_rect = title_text.get_rect(center=(title_x, title_y))
         
         # Semi-transparent background for title
-        bg_rect = title_rect.inflate(40, 20)
+        bg_padding_x = int(40 * const.UI_SCALE)
+        bg_padding_y = int(20 * const.UI_SCALE)
+        bg_rect = title_rect.inflate(bg_padding_x, bg_padding_y)
         bg_surface = pygame.Surface(bg_rect.size, pygame.SRCALPHA)
         bg_surface.fill((0, 0, 0, 150))
         

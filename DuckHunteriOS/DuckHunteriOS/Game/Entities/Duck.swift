@@ -8,19 +8,37 @@
 
 import SpriteKit
 
-class Duck: SKSpriteNode {
+class Duck: SKS    private func drawFallingFrame(colors: [CGColor], in context: CGContext, size: CGSize) {
+        // Body (main ellipse)
+        context.setFillColor(colors[0])
+        let bodyRect = CGRect(x: 4, y: 12, width: 32, height: 16)
+        context.fillEllipse(in: bodyRect)
 
-    // MARK: - Properties
+        // Head
+        context.setFillColor(colors[1])
+        let headRect = CGRect(x: 36, y: 12, width: 8, height: 8)
+        context.fillEllipse(in: headRect)
+
+        // Wings (spread out for falling)
+        context.setFillColor(colors[2])
+        let wingRect1 = CGRect(x: 8, y: 10, width: 20, height: 8)
+        let wingRect2 = CGRect(x: 8, y: 16, width: 20, height: 8)
+        context.fillEllipse(in: wingRect1) // MARK: - Properties
     private(set) var duckType: Constants.DuckType
     private(set) var state: DuckState = .flying
     private(set) var pointValue: Int
 
     // AI Properties
-    private var speed: CGFloat
+    private var _speed: CGFloat
     private var amplitude: CGFloat
     private var frequency: CGFloat
     private var initialY: CGFloat
     private var fallSpeed: CGFloat = 0
+
+    override var speed: CGFloat {
+        get { return _speed }
+        set { _speed = newValue }
+    }
 
     // Animation
     private var animationTextures: [SKTexture] = []
@@ -90,7 +108,12 @@ class Duck: SKSpriteNode {
             let cgContext = context.cgContext
 
             // Get color scheme
-            let colors = UIColor.duckColorSchemes[duckType.colorSchemeIndex]
+            #if os(iOS)
+            let colorScheme = UIColor.duckColorSchemes[duckType.colorSchemeIndex]
+            #else
+            let colorScheme = NSColor.duckColorSchemes[duckType.colorSchemeIndex]
+            #endif
+            let colors = colorScheme.map { $0.cgColor }
 
             switch state {
             case .flying:
@@ -103,25 +126,25 @@ class Duck: SKSpriteNode {
         return SKTexture(image: image)
     }
 
-    private func drawFlyingFrame(frame: Int, colors: [UIColor], in context: CGContext, size: CGSize) {
+    private func drawFlyingFrame(frame: Int, colors: [CGColor], in context: CGContext, size: CGSize) {
         // Body (main ellipse)
-        context.setFillColor(colors[0].cgColor) // body color
+        context.setFillColor(colors[0]) // body color
         let bodyRect = CGRect(x: 4, y: 12, width: 32, height: 16)
         context.fillEllipse(in: bodyRect)
 
         // Head
-        context.setFillColor(colors[1].cgColor) // head color
+        context.setFillColor(colors[1]) // head color
         let headRect = CGRect(x: 36, y: 12, width: 8, height: 8)
         context.fillEllipse(in: headRect)
 
         // Wing (alternate frames)
-        context.setFillColor(colors[2].cgColor) // wing color
+        context.setFillColor(colors[2]) // wing color
         let wingY = frame == 0 ? 8 : 16
         let wingRect = CGRect(x: 12, y: wingY, width: 16, height: 12)
         context.fillEllipse(in: wingRect)
 
         // Beak
-        context.setFillColor(colors[3].cgColor) // beak color
+        context.setFillColor(colors[3]) // beak color
         let beakPoints: [CGPoint] = [
             CGPoint(x: 44, y: 12),
             CGPoint(x: 48, y: 10),
@@ -132,18 +155,22 @@ class Duck: SKSpriteNode {
         context.fillPath()
 
         // Eye
-        context.setFillColor(colors[4].cgColor) // eye color
+        context.setFillColor(colors[4]) // eye color
         let eyeRect = CGRect(x: 38, y: 9, width: 2, height: 2)
         context.fillEllipse(in: eyeRect)
 
         // Wing detail
-        context.setFillColor(colors[2].withAlphaComponent(0.7).cgColor)
+        #if os(iOS)
+        context.setFillColor(UIColor(cgColor: colors[2]).withAlphaComponent(0.7).cgColor)
+        #else
+        context.setFillColor(NSColor(cgColor: colors[2]).withAlphaComponent(0.7).cgColor)
+        #endif
         let detailY = frame == 0 ? 10 : 18
         let detailRect = CGRect(x: 14, y: detailY, width: 12, height: 8)
         context.fillEllipse(in: detailRect)
     }
 
-    private func drawFallingFrame(colors: [UIColor], in context: CGContext, size: CGSize) {
+    private func drawFallingFrame(colors: [CGColor], in context: CGContext, size: CGSize) {
         // Body (main ellipse)
         context.setFillColor(colors[0].cgColor)
         let bodyRect = CGRect(x: 4, y: 12, width: 32, height: 16)
@@ -162,7 +189,7 @@ class Duck: SKSpriteNode {
         context.fillEllipse(in: wingRect2)
 
         // Beak
-        context.setFillColor(colors[3].cgColor)
+        context.setFillColor(colors[3])
         let beakPoints: [CGPoint] = [
             CGPoint(x: 44, y: 12),
             CGPoint(x: 48, y: 10),
@@ -173,7 +200,11 @@ class Duck: SKSpriteNode {
         context.fillPath()
 
         // X eyes (dead)
+        #if os(iOS)
         context.setStrokeColor(UIColor.red.cgColor)
+        #else
+        context.setStrokeColor(NSColor.red.cgColor)
+        #endif
         context.setLineWidth(2)
         context.move(to: CGPoint(x: 34, y: 8))
         context.addLine(to: CGPoint(x: 38, y: 12))

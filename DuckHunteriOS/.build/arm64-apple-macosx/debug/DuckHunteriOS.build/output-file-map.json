@@ -1,0 +1,119 @@
+{
+  "": {
+    "swift-dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/master.swiftdeps"
+  },
+  "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/DuckHunteriOS/App/AppDelegate.swift": {
+    "dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/AppDelegate.d",
+    "object": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/AppDelegate.swift.o",
+    "swiftmodule": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/AppDelegate~partial.swiftmodule",
+    "swift-dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/AppDelegate.swiftdeps"
+  },
+  "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/DuckHunteriOS/App/GameViewController.swift": {
+    "dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/GameViewController.d",
+    "object": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/GameViewController.swift.o",
+    "swiftmodule": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/GameViewController~partial.swiftmodule",
+    "swift-dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/GameViewController.swiftdeps"
+  },
+  "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/DuckHunteriOS/Game/Core/AudioManager.swift": {
+    "dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/AudioManager.d",
+    "object": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/AudioManager.swift.o",
+    "swiftmodule": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/AudioManager~partial.swiftmodule",
+    "swift-dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/AudioManager.swiftdeps"
+  },
+  "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/DuckHunteriOS/Game/Core/GameEngine.swift": {
+    "dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/GameEngine.d",
+    "object": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/GameEngine.swift.o",
+    "swiftmodule": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/GameEngine~partial.swiftmodule",
+    "swift-dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/GameEngine.swiftdeps"
+  },
+  "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/DuckHunteriOS/Game/Core/GameScene.swift": {
+    "dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/GameScene.d",
+    "object": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/GameScene.swift.o",
+    "swiftmodule": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/GameScene~partial.swiftmodule",
+    "swift-dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/GameScene.swiftdeps"
+  },
+  "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/DuckHunteriOS/Game/Core/InputManager.swift": {
+    "dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/InputManager.d",
+    "object": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/InputManager.swift.o",
+    "swiftmodule": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/InputManager~partial.swiftmodule",
+    "swift-dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/InputManager.swiftdeps"
+  },
+  "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/DuckHunteriOS/Game/Core/ResourceManager.swift": {
+    "dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/ResourceManager.d",
+    "object": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/ResourceManager.swift.o",
+    "swiftmodule": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/ResourceManager~partial.swiftmodule",
+    "swift-dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/ResourceManager.swiftdeps"
+  },
+  "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/DuckHunteriOS/Game/Entities/CrosshairNode.swift": {
+    "dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/CrosshairNode.d",
+    "object": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/CrosshairNode.swift.o",
+    "swiftmodule": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/CrosshairNode~partial.swiftmodule",
+    "swift-dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/CrosshairNode.swiftdeps"
+  },
+  "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/DuckHunteriOS/Game/Entities/Duck.swift": {
+    "dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/Duck.d",
+    "object": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/Duck.swift.o",
+    "swiftmodule": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/Duck~partial.swiftmodule",
+    "swift-dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/Duck.swiftdeps"
+  },
+  "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/DuckHunteriOS/Game/Entities/Player.swift": {
+    "dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/Player.d",
+    "object": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/Player.swift.o",
+    "swiftmodule": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/Player~partial.swiftmodule",
+    "swift-dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/Player.swiftdeps"
+  },
+  "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/DuckHunteriOS/Game/Systems/BackgroundNode.swift": {
+    "dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/BackgroundNode.d",
+    "object": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/BackgroundNode.swift.o",
+    "swiftmodule": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/BackgroundNode~partial.swiftmodule",
+    "swift-dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/BackgroundNode.swiftdeps"
+  },
+  "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/DuckHunteriOS/Game/Systems/DuckSpawner.swift": {
+    "dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/DuckSpawner.d",
+    "object": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/DuckSpawner.swift.o",
+    "swiftmodule": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/DuckSpawner~partial.swiftmodule",
+    "swift-dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/DuckSpawner.swiftdeps"
+  },
+  "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/DuckHunteriOS/Game/Systems/GameCenterManager.swift": {
+    "dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/GameCenterManager.d",
+    "object": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/GameCenterManager.swift.o",
+    "swiftmodule": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/GameCenterManager~partial.swiftmodule",
+    "swift-dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/GameCenterManager.swiftdeps"
+  },
+  "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/DuckHunteriOS/Game/Systems/MenuSystem.swift": {
+    "dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/MenuSystem.d",
+    "object": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/MenuSystem.swift.o",
+    "swiftmodule": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/MenuSystem~partial.swiftmodule",
+    "swift-dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/MenuSystem.swiftdeps"
+  },
+  "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/DuckHunteriOS/Game/Systems/ParticleSystem.swift": {
+    "dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/ParticleSystem.d",
+    "object": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/ParticleSystem.swift.o",
+    "swiftmodule": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/ParticleSystem~partial.swiftmodule",
+    "swift-dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/ParticleSystem.swiftdeps"
+  },
+  "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/DuckHunteriOS/Game/Systems/UISystem.swift": {
+    "dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/UISystem.d",
+    "object": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/UISystem.swift.o",
+    "swiftmodule": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/UISystem~partial.swiftmodule",
+    "swift-dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/UISystem.swiftdeps"
+  },
+  "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/DuckHunteriOS/Game/Systems/iCloudManager.swift": {
+    "dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/iCloudManager.d",
+    "object": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/iCloudManager.swift.o",
+    "swiftmodule": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/iCloudManager~partial.swiftmodule",
+    "swift-dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/iCloudManager.swiftdeps"
+  },
+  "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/DuckHunteriOS/Game/Utils/Constants.swift": {
+    "dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/Constants.d",
+    "object": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/Constants.swift.o",
+    "swiftmodule": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/Constants~partial.swiftmodule",
+    "swift-dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/Constants.swiftdeps"
+  },
+  "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/DerivedSources/resource_bundle_accessor.swift": {
+    "dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/resource_bundle_accessor.d",
+    "object": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/resource_bundle_accessor.swift.o",
+    "swiftmodule": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/resource_bundle_accessor~partial.swiftmodule",
+    "swift-dependencies": "/Users/ryanstubblefield/Downloads/ryanfuchs/RYANFUCH/DuckHunteriOS/.build/arm64-apple-macosx/debug/DuckHunteriOS.build/resource_bundle_accessor.swiftdeps"
+  }
+}

@@ -1,0 +1,4 @@
+pygame-ce==2.5.5
+numpy==2.2.6
+pymunk==7.0.1
+pillow==11.2.1

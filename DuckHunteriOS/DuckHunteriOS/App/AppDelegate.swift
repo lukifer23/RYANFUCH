@@ -2,44 +2,68 @@
 //  AppDelegate.swift
 //  DuckHunteriOS
 //
-//  Created by John Carmack
-//  Copyright © 2024 Duck Hunter. All rights reserved.
+//  macOS App Delegate for Duck Hunter
 //
 
-import UIKit
+import AppKit
+import AVFoundation
 
 @main
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate {
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+    var window: NSWindow?
 
-        // Initialize audio session for game audio
+    func applicationDidFinishLaunching(_ notification: Notification) {
+        print("🎮 Duck Hunter macOS - App Launched")
+
+        // Initialize audio session for game sounds
         setupAudioSession()
 
-        return true
+        // Initialize Game Center (simulated for macOS)
+        setupGameCenter()
+
+        // Initialize iCloud (simulated for macOS)
+        setupiCloud()
+
+        // Create main window
+        createMainWindow()
     }
 
-    // MARK: UISceneSession Lifecycle
-
-    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-        // Called when a new scene session is being created.
-        // Use this method to select a configuration to create the new scene with.
-        return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+    func applicationWillTerminate(_ notification: Notification) {
+        print("👋 Duck Hunter - App Terminating")
     }
 
-    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
-        // Called when the user discards a scene session.
-        // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
-        // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
+    private func createMainWindow() {
+        let screenRect = NSScreen.main?.frame ?? NSRect(x: 0, y: 0, width: 800, height: 600)
+        window = NSWindow(contentRect: screenRect,
+                         styleMask: [.titled, .closable, .miniaturizable, .resizable],
+                         backing: .buffered,
+                         defer: false)
+
+        window?.title = "🎯 Duck Hunter"
+        window?.center()
+
+        // Create game view controller
+        let gameViewController = GameViewController()
+        window?.contentViewController = gameViewController
+        window?.makeKeyAndOrderFront(nil)
+
+        print("✅ Main window created and displayed")
     }
 
     private func setupAudioSession() {
-        do {
-            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers, .duckOthers])
-            try AVAudioSession.sharedInstance().setActive(true)
-        } catch {
-            print("Failed to setup audio session: \(error)")
-        }
+        // Note: AVAudioSession is not available on macOS
+        // Audio setup would be handled differently on macOS
+        print("🔊 Audio setup (simplified for macOS)")
+    }
+
+    private func setupGameCenter() {
+        // Note: Game Center is primarily for iOS. On macOS, this would be simulated
+        print("🏆 Game Center setup (simulated for macOS)")
+    }
+
+    private func setupiCloud() {
+        // Note: iCloud integration would work similarly on macOS
+        print("☁️ iCloud setup (simulated for macOS)")
     }
 }

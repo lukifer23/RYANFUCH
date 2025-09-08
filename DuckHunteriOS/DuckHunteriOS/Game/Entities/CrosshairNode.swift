@@ -199,13 +199,17 @@ class CrosshairNode: SKNode {
         crosshairSprite.texture = createCrosshairTexture(size: size)
     }
 
-    func setColor(_ color: UIColor) {
-        crosshairSprite.color = color
+    func setColor(_ color: CGColor) {
+        #if os(iOS)
+        crosshairSprite.color = UIColor(cgColor: color)
+        #else
+        crosshairSprite.color = NSColor(cgColor: color)
+        #endif
         crosshairSprite.colorBlendFactor = 1.0
     }
 
     // MARK: - Utility
-    var position: CGPoint {
+    override var position: CGPoint {
         get { currentPosition }
         set { updatePosition(to: newValue) }
     }

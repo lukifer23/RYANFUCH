@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
     name: "DuckHunteriOS",
     platforms: [
-        .iOS(.v15)
+        .macOS(.v12)
     ],
     products: [
         .executable(
@@ -23,7 +23,6 @@ let package = Package(
             path: "DuckHunteriOS",
             sources: [
                 "App/AppDelegate.swift",
-                "App/SceneDelegate.swift",
                 "App/GameViewController.swift",
                 "Game/Core/GameEngine.swift",
                 "Game/Core/GameScene.swift",
@@ -31,22 +30,21 @@ let package = Package(
                 "Game/Core/AudioManager.swift",
                 "Game/Core/InputManager.swift",
                 "Game/Entities/Duck.swift",
-                "Game/Entities/GroundAnimal.swift",
                 "Game/Entities/Player.swift",
                 "Game/Entities/CrosshairNode.swift",
                 "Game/Systems/BackgroundNode.swift",
                 "Game/Systems/DuckSpawner.swift",
-                "Game/Systems/GroundAnimalSpawner.swift",
                 "Game/Systems/ParticleSystem.swift",
                 "Game/Systems/UISystem.swift",
                 "Game/Systems/MenuSystem.swift",
+                "Game/Systems/GameCenterManager.swift",
+                "Game/Systems/iCloudManager.swift",
                 "Game/Utils/Constants.swift"
             ],
             resources: [
-                .copy("Resources/Sounds"),
-                .copy("Resources/Sprites"),
-                .copy("Resources/Fonts"),
-                .copy("Resources/Data")
+                .copy("Resources/animations.json"),
+                .copy("Resources/keybinds.json"),
+                .copy("Resources/settings.json")
             ]
         )
     ]

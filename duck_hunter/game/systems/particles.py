@@ -30,10 +30,15 @@ class ParticleSystem:
 
     def emit_feathers(self, pos):
         """Emits a burst of 'feather' particles."""
+        from game.utils import constants as const
+        
         feather_color = (255, 255, 255) # White
         for _ in range(20): # Number of feathers
             vel = (random.uniform(-150, 150), random.uniform(-200, 0))
-            size = random.randint(2, 5)
+            # Scale particle size based on display scaling
+            min_size = max(1, int(2 * const.UI_SCALE))
+            max_size = max(1, int(5 * const.UI_SCALE))
+            size = random.randint(min_size, max_size)
             lifetime = random.uniform(0.5, 1.5)
             particle = Particle(pos, feather_color, size, vel, lifetime)
             self.particles.add(particle)

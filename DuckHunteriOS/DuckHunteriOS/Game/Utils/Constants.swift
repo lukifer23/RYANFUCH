@@ -6,14 +6,47 @@
 //  Copyright © 2024 Duck Hunter. All rights reserved.
 //
 
+#if os(iOS)
 import UIKit
+#else
+import AppKit
+import CoreGraphics
+#endif
 
 struct Constants {
 
-    // MARK: - Screen Dimensions
-    static let screenWidth: CGFloat = 1920
-    static let screenHeight: CGFloat = 1080
-    static let targetFPS: Double = 60.0
+    // MARK: - Screen Dimensions (Dynamic Scaling)
+    static var screenWidth: CGFloat {
+        #if os(iOS)
+        return UIScreen.main.bounds.width
+        #else
+        return NSScreen.main?.frame.width ?? 1920
+        #endif
+    }
+
+    static var screenHeight: CGFloat {
+        #if os(iOS)
+        return UIScreen.main.bounds.height
+        #else
+        return NSScreen.main?.frame.height ?? 1080
+        #endif
+    }
+    
+    // Scaling factors based on reference resolution (1920x1080)
+    static let referenceWidth: CGFloat = 1920
+    static let referenceHeight: CGFloat = 1080
+    
+    static var scaleX: CGFloat {
+        return screenWidth / referenceWidth
+    }
+    
+    static var scaleY: CGFloat {
+        return screenHeight / referenceHeight
+    }
+    
+    static var scaleFactor: CGFloat {
+        return min(scaleX, scaleY)
+    }
 
     // MARK: - Game Physics
     static let gravity: CGFloat = 980.0  // pixels per second squared
@@ -21,8 +54,14 @@ struct Constants {
     static let groundY: CGFloat = 120.0
 
     // MARK: - Crosshair Settings
-    static let crosshairHitRadius: CGFloat = 25.0
-    static let crosshairSize: CGSize = CGSize(width: 60, height: 60)
+    static var crosshairHitRadius: CGFloat {
+        return 25.0 * scaleFactor
+    }
+    
+    static var crosshairSize: CGSize {
+        let baseSize: CGFloat = 60.0
+        return CGSize(width: baseSize * scaleFactor, height: baseSize * scaleFactor)
+    }
 
     // MARK: - Game Timing
     static let godModeTimeLimit: TimeInterval = 300.0  // 5 minutes
@@ -170,13 +209,34 @@ struct Constants {
     }
 
     // MARK: - Colors
-    static let backgroundColor = UIColor.black
-    static let uiTextColor = UIColor.white
+    static let backgroundColor: CGColor = {
+        #if os(iOS)
+        return UIColor.black.cgColor
+        #else
+        return NSColor.black.cgColor
+        #endif
+    }()
+    
+    static let uiTextColor: CGColor = {
+        #if os(iOS)
+        return UIColor.white.cgColor
+        #else
+        return NSColor.white.cgColor
+        #endif
+    }()
 
     // MARK: - UI Layout
-    static let hudTopMargin: CGFloat = 20.0
-    static let hudSideMargin: CGFloat = 30.0
-    static let uiFontSize: CGFloat = 24.0
+    static var hudTopMargin: CGFloat {
+        return 20.0 * scaleFactor
+    }
+    
+    static var hudSideMargin: CGFloat {
+        return 30.0 * scaleFactor
+    }
+    
+    static var uiFontSize: CGFloat {
+        return 24.0 * scaleFactor
+    }
     static let uiFontName = "Courier-Bold"
 
     // MARK: - Animation
@@ -184,7 +244,10 @@ struct Constants {
     static let duckFallDuration: TimeInterval = 1.0
     static let hitFeedbackDuration: TimeInterval = 0.1
     static let screenShakeDuration: TimeInterval = 0.2
-    static let screenShakeIntensity: CGFloat = 5.0
+    
+    static var screenShakeIntensity: CGFloat {
+        return 5.0 * scaleFactor
+    }
 
     // MARK: - Audio
     static let masterVolume: Float = 1.0
@@ -213,6 +276,7 @@ extension CGPoint {
     }
 }
 
+#if os(iOS)
 extension UIColor {
     // Duck color schemes (matching Python version)
     static let duckColorSchemes: [[UIColor]] = [
@@ -245,3 +309,37 @@ extension UIColor {
          UIColor.black]
     ]
 }
+#else
+extension NSColor {
+    // Duck color schemes (matching Python version)
+    static let duckColorSchemes: [[NSColor]] = [
+        // Brown duck: body, head, wing, beak, eye
+        [NSColor(red: 0.55, green: 0.27, blue: 0.07, alpha: 1.0),  // body
+         NSColor(red: 0.63, green: 0.41, blue: 0.22, alpha: 1.0),  // head
+         NSColor(red: 0.87, green: 0.72, blue: 0.53, alpha: 1.0),  // wing
+         NSColor(red: 1.0, green: 0.65, blue: 0.0, alpha: 1.0),    // beak
+         NSColor.black],                                           // eye
+
+        // Gray duck: body, head, wing, beak, eye
+        [NSColor(red: 0.41, green: 0.41, blue: 0.41, alpha: 1.0),
+         NSColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0),
+         NSColor(red: 0.75, green: 0.75, blue: 0.75, alpha: 1.0),
+         NSColor(red: 1.0, green: 0.7, blue: 0.0, alpha: 1.0),
+         NSColor.black],
+
+        // Golden duck: body, head, wing, beak, eye
+        [NSColor(red: 1.0, green: 0.84, blue: 0.0, alpha: 1.0),
+         NSColor(red: 1.0, green: 0.87, blue: 0.0, alpha: 1.0),
+         NSColor(red: 1.0, green: 0.96, blue: 0.0, alpha: 1.0),
+         NSColor(red: 1.0, green: 0.27, blue: 0.0, alpha: 1.0),
+         NSColor.black],
+
+        // Green duck: body, head, wing, beak, eye
+        [NSColor(red: 0.0, green: 0.39, blue: 0.0, alpha: 1.0),
+         NSColor(red: 0.0, green: 0.5, blue: 0.0, alpha: 1.0),
+         NSColor(red: 0.56, green: 0.93, blue: 0.56, alpha: 1.0),
+         NSColor(red: 1.0, green: 0.08, blue: 0.58, alpha: 1.0),
+         NSColor.black]
+    ]
+}
+#endif

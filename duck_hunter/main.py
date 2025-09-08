@@ -29,29 +29,40 @@ from game.systems.menu_system import MenuSystem
 class Crosshair(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface((60, 60), pygame.SRCALPHA)
+        # Scale crosshair size based on display scaling
+        crosshair_size = int(60 * const.UI_SCALE)
+        self.image = pygame.Surface((crosshair_size, crosshair_size), pygame.SRCALPHA)
+        
+        center = crosshair_size // 2
         
         # Draw a more visible crosshair with larger hit area
         # Outer circle (thick) - shows hit radius
-        pygame.draw.circle(self.image, (255, 255, 255), (30, 30), 25, 2)
+        outer_radius = int(25 * const.UI_SCALE)
+        pygame.draw.circle(self.image, (255, 255, 255), (center, center), outer_radius, max(1, int(2 * const.UI_SCALE)))
+        
         # Inner circle (thin)
-        pygame.draw.circle(self.image, (255, 255, 255), (30, 30), 15, 1)
+        inner_radius = int(15 * const.UI_SCALE)
+        pygame.draw.circle(self.image, (255, 255, 255), (center, center), inner_radius, max(1, int(1 * const.UI_SCALE)))
         
         # Cross lines (longer for better visibility)
-        pygame.draw.line(self.image, (255, 255, 255), (30, 0), (30, 12), 2)
-        pygame.draw.line(self.image, (255, 255, 255), (30, 48), (30, 60), 2)
-        pygame.draw.line(self.image, (255, 255, 255), (0, 30), (12, 30), 2)
-        pygame.draw.line(self.image, (255, 255, 255), (48, 30), (60, 30), 2)
+        line_width = max(1, int(2 * const.UI_SCALE))
+        pygame.draw.line(self.image, (255, 255, 255), (center, 0), (center, int(12 * const.UI_SCALE)), line_width)
+        pygame.draw.line(self.image, (255, 255, 255), (center, crosshair_size - int(12 * const.UI_SCALE)), (center, crosshair_size), line_width)
+        pygame.draw.line(self.image, (255, 255, 255), (0, center), (int(12 * const.UI_SCALE), center), line_width)
+        pygame.draw.line(self.image, (255, 255, 255), (crosshair_size - int(12 * const.UI_SCALE), center), (crosshair_size, center), line_width)
         
         # Center dot
-        pygame.draw.circle(self.image, (255, 255, 255), (30, 30), 3)
+        pygame.draw.circle(self.image, (255, 255, 255), (center, center), max(1, int(3 * const.UI_SCALE)))
         
         # Hit radius indicator (semi-transparent)
-        hit_indicator = pygame.Surface((50, 50), pygame.SRCALPHA)
-        pygame.draw.circle(hit_indicator, (255, 255, 255, 50), (25, 25), 20, 1)
+        hit_indicator_size = int(50 * const.UI_SCALE)
+        hit_indicator = pygame.Surface((hit_indicator_size, hit_indicator_size), pygame.SRCALPHA)
+        hit_indicator_center = hit_indicator_size // 2
+        hit_indicator_radius = int(20 * const.UI_SCALE)
+        pygame.draw.circle(hit_indicator, (255, 255, 255, 50), (hit_indicator_center, hit_indicator_center), hit_indicator_radius, max(1, int(1 * const.UI_SCALE)))
         
         self.rect = self.image.get_rect()
-        self.hit_radius = 25  # Larger hit detection radius for easier targeting
+        self.hit_radius = int(25 * const.UI_SCALE)  # Larger hit detection radius for easier targeting
         self.hit_indicator = hit_indicator
 
     def update(self, *args):
@@ -325,9 +336,11 @@ class Game:
                 if hasattr(closest_target, 'duck_type'):  # It's a duck
                     closest_target.shoot_down()
                     self.particle_system.emit_feathers(closest_target.rect.center)
+                    self.audio_manager.play_sound("hit.wav")
                     print(f"Hit! {closest_target.duck_type.title()} duck: +{closest_target.point_value} points")
                 elif hasattr(closest_target, 'animal_type'):  # It's a ground animal
                     closest_target.shoot_hit()
+                    self.audio_manager.play_sound("hit.wav")
                     print(f"Hit! {closest_target.animal_type.title()}: +{closest_target.point_value} points")
                 
                 self.player.add_score(closest_target.point_value)
