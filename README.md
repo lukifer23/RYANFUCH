@@ -16,6 +16,13 @@ A modern, feature-rich duck hunting game with multi-platform support. Experience
 - **Tech Stack**: Swift 5.9, SpriteKit, AVAudioEngine
 - **Features**: Native touch controls, optimized performance
 
+### **🖥️ macOS Port**
+- **Status**: 🚧 In Development (Cross-Platform Compatibility)
+- **Platform**: macOS 12.0+
+- **Tech Stack**: Swift 5.9, SpriteKit, AVAudioEngine
+- **Features**: Mouse controls, cross-platform Swift code
+- **Current Progress**: Core architecture ported, resolving UIKit/AppKit compatibility
+
 ### **🤖 Android Port**
 - **Status**: 🚧 In Development (Black Screen Issue)
 - **Platform**: Android 8.0+
@@ -136,6 +143,31 @@ duck_hunter/
     ├── sprites/
     ├── sounds/
     └── fonts/
+
+DuckHunteriOS/             # iOS/macOS Swift Port
+├── Package.swift          # Swift Package Manager config
+├── DuckHunteriOS/
+│   ├── App/
+│   │   ├── AppDelegate.swift
+│   │   ├── GameViewController.swift
+│   │   └── SceneDelegate.swift
+│   ├── Game/
+│   │   ├── Core/         # Core game systems
+│   │   ├── Entities/     # Game entities
+│   │   ├── Systems/      # Game systems
+│   │   └── Utils/        # Utilities
+│   └── Resources/        # Configuration files
+└── build_and_run.sh      # Build script
+
+DuckHunterDroid/           # Android Kotlin Port
+├── build.gradle.kts      # Gradle build config
+├── app/
+│   ├── build.gradle.kts
+│   └── src/main/
+│       ├── AndroidManifest.xml
+│       ├── java/com/duckhunter/android/
+│       └── res/
+└── build_android.sh      # Build script
 ```
 
 ## 🎯 Game Modes Explained
@@ -232,6 +264,36 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🚨 Current Issues & Status
 
+### **macOS Port - Cross-Platform Compatibility**
+**Problem**: Swift code needs platform-specific adaptations for macOS vs iOS.
+
+**Root Cause**: UIKit dependencies not available on macOS, requiring AppKit equivalents.
+
+**Current Status**:
+- ✅ Consolidated project structure (removed duplicate directories)
+- ✅ Converted AppDelegate from UIApplicationDelegate to NSApplicationDelegate
+- ✅ Updated GameViewController from UIViewController to NSViewController
+- ✅ Fixed GameScene to support mouse events alongside touch events
+- ✅ Updated ResourceManager and InputManager for cross-platform compatibility
+- ✅ Fixed Constants for platform-specific screen dimensions
+- ⚠️ Resolving remaining UIKit dependencies (UIColor, UIImage, UIGraphicsImageRenderer)
+- ⚠️ AudioManager type casting and buffer duration issues
+
+**Debugging Steps Taken**:
+1. Consolidated main DuckHunteriOS project directory
+2. Converted major UI components to AppKit/macOS equivalents
+3. Fixed circular reference issues in GameViewController
+4. Updated GameScene with handleMouse method
+5. Added platform-specific imports and conditional compilation
+6. Temporarily excluded problematic files (GroundAnimal) to focus on core build
+
+**Next Steps**:
+- Convert remaining UIKit-dependent entities (Duck, BackgroundNode, ParticleSystem)
+- Fix AudioManager Double/Float casting issues
+- Complete cross-platform color and image handling
+- Restore excluded files with platform-specific implementations
+- Test incremental builds and verify functionality
+
 ### **Android Port - Black Screen Issue**
 **Problem**: Android app loads but shows only a black screen with no menu or game content.
 
@@ -259,6 +321,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ### **Known Workarounds**
 - The Python version runs perfectly on desktop
 - The iOS version is fully functional with native performance
+- macOS port progressing with cross-platform Swift code
 - Android debug APK builds successfully and installs on device
 
 ## 🎯 Future Features
@@ -269,6 +332,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **High Score System**: Persistent score tracking
 - **Customization**: Weapon skins, crosshair styles
 - **Multiplayer**: Online leaderboards and competitions
+- **macOS Port Completion**: Fix remaining UIKit dependencies and complete cross-platform compatibility
 - **Android Port Completion**: Fix black screen and complete touch controls
 - **Cross-Platform Features**: Unified high scores, achievements
 

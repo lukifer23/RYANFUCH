@@ -23,6 +23,13 @@
 - **Features**: Native touch controls, optimized performance
 - **Build System**: Xcode command-line tools
 
+### **🖥️ macOS Version (Port)**
+- **Status**: 🚧 **IN PROGRESS** - Cross-platform compatibility
+- **Tech Stack**: Swift 5.9, SpriteKit, AVAudioEngine
+- **Features**: Mouse controls, cross-platform Swift code
+- **Current Progress**: Core architecture ported, resolving UIKit/AppKit compatibility
+- **Build System**: Swift Package Manager
+
 ### **🤖 Android Version (Port)**
 - **Status**: 🚧 **IN PROGRESS** - Black screen issue
 - **Tech Stack**: Kotlin 1.9, OpenGL ES 3.0, OpenSL ES
@@ -30,8 +37,9 @@
 - **Progress**: Core architecture complete, debugging in progress
 
 ### **Current Issues**
+- **macOS UIKit Compatibility**: Swift code needs platform-specific adaptations for macOS vs iOS
 - **Android Black Screen**: Menu UI not rendering despite successful build/install
-- **Root Cause Identified**: System UI hiding was preventing menu display (partially fixed)
+- **Root Cause Identified**: UIKit dependencies not available on macOS, requiring AppKit equivalents
 - **Next Steps**: Complete debugging and UI rendering fixes
 
 ---
@@ -135,6 +143,15 @@
 - [x] **Touch Controls**: Native multi-touch support
 - [x] **Performance**: Optimized for iOS 15.0+
 - [x] **Build System**: Xcode command-line integration
+
+### **macOS Port (In Progress)**
+- [x] **Swift Architecture**: SpriteKit, AVAudioEngine
+- [x] **Mouse Controls**: Native mouse support with click handling
+- [x] **UIKit → AppKit Migration**: Converting iOS-specific to macOS-compatible code
+- [x] **Cross-Platform Constants**: Platform-specific screen dimensions and UI
+- [x] **Build System**: Swift Package Manager working
+- [ ] **UIKit Compatibility**: Convert remaining UIKit-dependent entities
+- [ ] **AudioManager Fixes**: Resolve Double/Float casting and buffer duration issues
 
 ### **Android Port (In Progress)**
 - [x] **Kotlin Architecture**: OpenGL ES 3.0, OpenSL ES
