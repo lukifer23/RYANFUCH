@@ -87,7 +87,7 @@ class GameViewController: NSViewController {
     private func setupGameCenterAndICloud() {
         // Initialize managers lazily to avoid circular references
         gameCenterManager = GameCenterManager.shared
-        iCloudManager = iCloudManager.shared
+        iCloudManager = ICloudManager.shared
 
         // Game Center is initialized automatically when GameCenterManager.shared is accessed
         print("🏆 Game Center initialized")

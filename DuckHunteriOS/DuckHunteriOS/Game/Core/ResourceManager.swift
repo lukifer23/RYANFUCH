@@ -10,6 +10,10 @@
 import UIKit
 #endif
 import AVFoundation
+import SpriteKit
+#if os(macOS)
+import AppKit
+#endif
 
 class ResourceManager {
 

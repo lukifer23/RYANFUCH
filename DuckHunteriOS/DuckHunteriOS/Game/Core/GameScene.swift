@@ -7,6 +7,7 @@
 
 import SpriteKit
 import AVFoundation
+import CoreGraphics
 #if os(macOS)
 import AppKit
 #endif

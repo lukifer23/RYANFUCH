@@ -9,6 +9,9 @@
 #if os(iOS)
 import UIKit
 #endif
+import CoreGraphics
+import Foundation
+import QuartzCore
 
 class InputManager {
 
@@ -125,7 +128,7 @@ class InputManager {
     func getSmoothedCrosshairPosition() -> CGPoint {
         // Apply sensitivity and smoothing
         let sensitivity = CGFloat(crosshairSensitivity)
-        return currentInputLocation * sensitivity
+        return CGPoint(x: currentInputLocation.x * sensitivity, y: currentInputLocation.y * sensitivity)
     }
 
     // MARK: - Aim Assist

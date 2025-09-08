@@ -7,6 +7,12 @@
 //
 
 import SpriteKit
+#if os(iOS)
+import UIKit
+#endif
+#if os(macOS)
+import AppKit
+#endif
 
 class BackgroundNode: SKNode {
 
@@ -59,6 +65,7 @@ class BackgroundNode: SKNode {
         let layerHeight = sceneSize.height
         let layerWidth = sceneSize.width * 2 // Double width for seamless scrolling
 
+        #if os(iOS)
         let renderer = UIGraphicsImageRenderer(size: CGSize(width: layerWidth, height: layerHeight))
 
         let image = renderer.image { context in
@@ -84,6 +91,50 @@ class BackgroundNode: SKNode {
         }
 
         let texture = SKTexture(image: image)
+        #else
+        // macOS implementation
+        let image = NSImage(size: CGSize(width: layerWidth, height: layerHeight))
+        image.lockFocus()
+
+        if let cgContext = NSGraphicsContext.current?.cgContext {
+            // Sky gradient background
+            let skyColors = [
+                NSColor(red: 0.4, green: 0.6, blue: 1.0, alpha: 1.0), // Light blue at top
+                NSColor(red: 0.7, green: 0.8, blue: 1.0, alpha: 1.0), // Lighter blue
+                NSColor(red: 0.9, green: 0.9, blue: 1.0, alpha: 1.0), // Very light blue at bottom
+            ]
+
+            // Create gradient
+            let colorSpace = CGColorSpaceCreateDeviceRGB()
+            let colors = skyColors.map { $0.cgColor }
+            let locations: [CGFloat] = [0.0, 0.5, 1.0]
+
+            if let gradient = CGGradient(colorsSpace: colorSpace, colors: colors, locations: locations) {
+                cgContext.drawLinearGradient(gradient,
+                                           start: CGPoint(x: 0, y: layerHeight),
+                                           end: CGPoint(x: 0, y: 0),
+                                           options: [])
+            }
+
+            // Background elements based on layer
+            switch layerIndex {
+            case 0: // Backmost layer - distant mountains/hills
+                drawDistantHills(in: cgContext, size: CGSize(width: layerWidth, height: layerHeight))
+            case 1: // Middle-back layer - closer hills
+                drawCloserHills(in: cgContext, size: CGSize(width: layerWidth, height: layerHeight))
+            case 2: // Middle-front layer - trees and bushes
+                drawTreesAndBushes(in: cgContext, size: CGSize(width: layerWidth, height: layerHeight))
+            case 3: // Front layer - ground and grass
+                drawGroundAndGrass(in: cgContext, size: CGSize(width: layerWidth, height: layerHeight))
+            default:
+                break
+            }
+        }
+
+        image.unlockFocus()
+        let texture = SKTexture(image: image)
+        #endif
+
         let layer = SKSpriteNode(texture: texture)
         layer.position = CGPoint(x: layerWidth / 4, y: layerHeight / 2) // Center the layer
         layer.zPosition = CGFloat(-10 + layerIndex) // Backmost layers have lowest z-position
@@ -91,11 +142,12 @@ class BackgroundNode: SKNode {
         return layer
     }
 
-    private func createSkyGradient(for layerIndex: Int) -> UIImage {
+    private func createSkyGradient(for layerIndex: Int) -> SKTexture {
         let size = CGSize(width: 1, height: sceneSize.height)
-        let renderer = UIGraphicsImageRenderer(size: size)
 
-        return renderer.image { context in
+        #if os(iOS)
+        let renderer = UIGraphicsImageRenderer(size: size)
+        let image = renderer.image { context in
             let cgContext = context.cgContext
 
             // Sky colors (gradient from top to bottom)
@@ -107,7 +159,7 @@ class BackgroundNode: SKNode {
 
             // Create gradient
             let colorSpace = CGColorSpaceCreateDeviceRGB()
-            let colors = skyColors.map { $0.cgColor } as CFArray
+            let colors = skyColors.map { $0.cgColor }
             let locations: [CGFloat] = [0.0, 0.5, 1.0]
 
             if let gradient = CGGradient(colorsSpace: colorSpace, colors: colors, locations: locations) {
@@ -117,11 +169,73 @@ class BackgroundNode: SKNode {
                                            options: [])
             }
         }
+        return SKTexture(image: image)
+        #else
+        // macOS implementation using NSImage
+        let image = NSImage(size: size)
+        image.lockFocus()
+
+        if let context = NSGraphicsContext.current?.cgContext {
+            // Sky colors (gradient from top to bottom)
+            let skyColors = [
+                NSColor(red: 0.4, green: 0.6, blue: 1.0, alpha: 1.0), // Light blue at top
+                NSColor(red: 0.7, green: 0.8, blue: 1.0, alpha: 1.0), // Lighter blue
+                NSColor(red: 0.9, green: 0.9, blue: 1.0, alpha: 1.0), // Very light blue at bottom
+            ]
+
+            // Create gradient
+            let colorSpace = CGColorSpaceCreateDeviceRGB()
+            let colors = skyColors.map { $0.cgColor }
+            let locations: [CGFloat] = [0.0, 0.5, 1.0]
+
+            if let gradient = CGGradient(colorsSpace: colorSpace, colors: colors, locations: locations) {
+                context.drawLinearGradient(gradient,
+                                         start: CGPoint(x: 0, y: size.height),
+                                         end: CGPoint(x: 0, y: 0),
+                                         options: [])
+            }
+        }
+
+        image.unlockFocus()
+        return SKTexture(image: image)
+        #else
+        // macOS implementation using NSImage
+        let image = NSImage(size: size)
+        image.lockFocus()
+
+        if let context = NSGraphicsContext.current?.cgContext {
+            // Sky colors (gradient from top to bottom)
+            let skyColors = [
+                NSColor(red: 0.4, green: 0.6, blue: 1.0, alpha: 1.0), // Light blue at top
+                NSColor(red: 0.7, green: 0.8, blue: 1.0, alpha: 1.0), // Lighter blue
+                NSColor(red: 0.9, green: 0.9, blue: 1.0, alpha: 1.0), // Very light blue at bottom
+            ]
+
+            // Create gradient
+            let colorSpace = CGColorSpaceCreateDeviceRGB()
+            let colors = skyColors.map { $0.cgColor }
+            let locations: [CGFloat] = [0.0, 0.5, 1.0]
+
+            if let gradient = CGGradient(colorsSpace: colorSpace, colors: colors, locations: locations) {
+                context.drawLinearGradient(gradient,
+                                         start: CGPoint(x: 0, y: size.height),
+                                         end: CGPoint(x: 0, y: 0),
+                                         options: [])
+            }
+        }
+
+        image.unlockFocus()
+        return SKTexture(image: image)
+        #endif
     }
 
     // MARK: - Background Element Drawing
     private func drawDistantHills(in context: CGContext, size: CGSize) {
+        #if os(iOS)
         context.setFillColor(UIColor(red: 0.3, green: 0.5, blue: 0.3, alpha: 1.0).cgColor)
+        #else
+        context.setFillColor(NSColor(red: 0.3, green: 0.5, blue: 0.3, alpha: 1.0).cgColor)
+        #endif
 
         // Draw distant hills with gentle curves
         let hillPath = CGMutablePath()
@@ -142,7 +256,11 @@ class BackgroundNode: SKNode {
     }
 
     private func drawCloserHills(in context: CGContext, size: CGSize) {
+        #if os(iOS)
         context.setFillColor(UIColor(red: 0.2, green: 0.4, blue: 0.2, alpha: 1.0).cgColor)
+        #else
+        context.setFillColor(NSColor(red: 0.2, green: 0.4, blue: 0.2, alpha: 1.0).cgColor)
+        #endif
 
         // Draw closer hills with more detail
         let hillPath = CGMutablePath()
@@ -178,15 +296,27 @@ class BackgroundNode: SKNode {
 
     private func drawGroundAndGrass(in context: CGContext, size: CGSize) {
         // Draw ground
+        #if os(iOS)
         context.setFillColor(UIColor(red: 0.4, green: 0.3, blue: 0.2, alpha: 1.0).cgColor)
+        #else
+        context.setFillColor(NSColor(red: 0.4, green: 0.3, blue: 0.2, alpha: 1.0).cgColor)
+        #endif
         context.fill(CGRect(x: 0, y: 0, width: size.width, height: 120))
 
         // Draw grass on top
+        #if os(iOS)
         context.setFillColor(UIColor(red: 0.2, green: 0.6, blue: 0.2, alpha: 1.0).cgColor)
+        #else
+        context.setFillColor(NSColor(red: 0.2, green: 0.6, blue: 0.2, alpha: 1.0).cgColor)
+        #endif
         context.fill(CGRect(x: 0, y: 110, width: size.width, height: 20))
 
         // Add grass details
+        #if os(iOS)
         context.setStrokeColor(UIColor(red: 0.1, green: 0.5, blue: 0.1, alpha: 1.0).cgColor)
+        #else
+        context.setStrokeColor(NSColor(red: 0.1, green: 0.5, blue: 0.1, alpha: 1.0).cgColor)
+        #endif
         context.setLineWidth(1.0)
 
         for x in stride(from: 0, to: Int(size.width), by: 10) {
@@ -200,11 +330,19 @@ class BackgroundNode: SKNode {
     // MARK: - Tree and Bush Drawing
     private func drawPineTree(at position: CGPoint, in context: CGContext) {
         // Tree trunk
+        #if os(iOS)
         context.setFillColor(UIColor(red: 0.4, green: 0.2, blue: 0.1, alpha: 1.0).cgColor)
+        #else
+        context.setFillColor(NSColor(red: 0.4, green: 0.2, blue: 0.1, alpha: 1.0).cgColor)
+        #endif
         context.fill(CGRect(x: position.x - 3, y: position.y, width: 6, height: 20))
 
         // Pine branches (triangles)
+        #if os(iOS)
         context.setFillColor(UIColor(red: 0.1, green: 0.3, blue: 0.1, alpha: 1.0).cgColor)
+        #else
+        context.setFillColor(NSColor(red: 0.1, green: 0.3, blue: 0.1, alpha: 1.0).cgColor)
+        #endif
 
         let trianglePath = CGMutablePath()
         trianglePath.move(to: CGPoint(x: position.x, y: position.y + 20))
@@ -217,17 +355,29 @@ class BackgroundNode: SKNode {
 
     private func drawOakTree(at position: CGPoint, in context: CGContext) {
         // Tree trunk
+        #if os(iOS)
         context.setFillColor(UIColor(red: 0.4, green: 0.2, blue: 0.1, alpha: 1.0).cgColor)
+        #else
+        context.setFillColor(NSColor(red: 0.4, green: 0.2, blue: 0.1, alpha: 1.0).cgColor)
+        #endif
         context.fill(CGRect(x: position.x - 4, y: position.y, width: 8, height: 25))
 
         // Tree canopy (circle)
+        #if os(iOS)
         context.setFillColor(UIColor(red: 0.1, green: 0.4, blue: 0.1, alpha: 1.0).cgColor)
+        #else
+        context.setFillColor(NSColor(red: 0.1, green: 0.4, blue: 0.1, alpha: 1.0).cgColor)
+        #endif
         context.fillEllipse(in: CGRect(x: position.x - 12, y: position.y + 15, width: 24, height: 20))
     }
 
     private func drawBush(at position: CGPoint, in context: CGContext) {
         // Bush (rounded rectangle)
+        #if os(iOS)
         context.setFillColor(UIColor(red: 0.1, green: 0.5, blue: 0.1, alpha: 1.0).cgColor)
+        #else
+        context.setFillColor(NSColor(red: 0.1, green: 0.5, blue: 0.1, alpha: 1.0).cgColor)
+        #endif
         let bushPath = CGPath(roundedRect: CGRect(x: position.x - 8, y: position.y, width: 16, height: 12),
                              cornerWidth: 6, cornerHeight: 6, transform: nil)
         context.addPath(bushPath)
@@ -239,6 +389,7 @@ class BackgroundNode: SKNode {
         let layerWidth = sceneSize.width * 2
         let layerHeight = sceneSize.height * 0.4 // Clouds in upper portion
 
+        #if os(iOS)
         let renderer = UIGraphicsImageRenderer(size: CGSize(width: layerWidth, height: layerHeight))
 
         let image = renderer.image { context in
@@ -253,6 +404,24 @@ class BackgroundNode: SKNode {
         }
 
         let texture = SKTexture(image: image)
+        #else
+        // macOS implementation
+        let image = NSImage(size: CGSize(width: layerWidth, height: layerHeight))
+        image.lockFocus()
+
+        if let cgContext = NSGraphicsContext.current?.cgContext {
+            // Draw clouds
+            for _ in 0..<5 {
+                let x = CGFloat.random(in: 0...layerWidth)
+                let y = CGFloat.random(in: layerHeight * 0.2...layerHeight * 0.8)
+                drawCloud(at: CGPoint(x: x, y: y), in: cgContext)
+            }
+        }
+
+        image.unlockFocus()
+        let texture = SKTexture(image: image)
+        #endif
+
         let layer = SKSpriteNode(texture: texture)
         layer.position = CGPoint(x: layerWidth / 4, y: sceneSize.height * 0.7)
         layer.zPosition = CGFloat(-5 + layerIndex)
@@ -261,7 +430,11 @@ class BackgroundNode: SKNode {
     }
 
     private func drawCloud(at position: CGPoint, in context: CGContext) {
+        #if os(iOS)
         context.setFillColor(UIColor.white.withAlphaComponent(0.8).cgColor)
+        #else
+        context.setFillColor(NSColor.white.withAlphaComponent(0.8).cgColor)
+        #endif
 
         // Draw cloud as combination of circles
         let cloudParts = [

@@ -8,7 +8,8 @@
 
 import SpriteKit
 
-class Duck: SKS    private func drawFallingFrame(colors: [CGColor], in context: CGContext, size: CGSize) {
+class Duck: SKSpriteNode {
+    private func drawFallingFrame(colors: [CGColor], in context: CGContext, size: CGSize) {
         // Body (main ellipse)
         context.setFillColor(colors[0])
         let bodyRect = CGRect(x: 4, y: 12, width: 32, height: 16)
@@ -23,7 +24,11 @@ class Duck: SKS    private func drawFallingFrame(colors: [CGColor], in context: 
         context.setFillColor(colors[2])
         let wingRect1 = CGRect(x: 8, y: 10, width: 20, height: 8)
         let wingRect2 = CGRect(x: 8, y: 16, width: 20, height: 8)
-        context.fillEllipse(in: wingRect1) // MARK: - Properties
+        context.fillEllipse(in: wingRect1)
+        context.fillEllipse(in: wingRect2)
+    }
+
+    // MARK: - Properties
     private(set) var duckType: Constants.DuckType
     private(set) var state: DuckState = .flying
     private(set) var pointValue: Int

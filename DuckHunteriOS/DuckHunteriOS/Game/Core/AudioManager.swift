@@ -81,7 +81,8 @@ class AudioManager {
             player.play()
             
             // Clean up after playing
-            DispatchQueue.main.asyncAfter(deadline: .now() + buffer.duration) {
+            let duration = Double(buffer.frameLength) / buffer.format.sampleRate
+            DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
                 self.audioEngine.detach(player)
             }
         } catch {
@@ -209,8 +210,8 @@ class AudioManager {
             let envelope = exp(-t * 20)
             let wave = sin(frequency * 2 * .pi * t) * envelope
             
-            channelData[0][frame] = wave * 0.3
-            channelData[1][frame] = wave * 0.3
+            channelData[0][frame] = Float(wave * 0.3)
+            channelData[1][frame] = Float(wave * 0.3)
         }
         
         return buffer
@@ -236,8 +237,8 @@ class AudioManager {
             let wave2 = sin(600 * 2 * .pi * t) * envelope * 0.5
             let wave = wave1 + wave2
             
-            channelData[0][frame] = wave * 0.6
-            channelData[1][frame] = wave * 0.6
+            channelData[0][frame] = Float(wave * 0.6)
+            channelData[1][frame] = Float(wave * 0.6)
         }
         
         return buffer
@@ -293,8 +294,8 @@ class AudioManager {
             let envelope = exp(-t * 15)
             let wave = sin(200 * 2 * .pi * t) * envelope
             
-            channelData[0][frame] = wave * 0.5
-            channelData[1][frame] = wave * 0.5
+            channelData[0][frame] = Float(wave * 0.5)
+            channelData[1][frame] = Float(wave * 0.5)
         }
         
         return buffer
@@ -318,8 +319,8 @@ class AudioManager {
             let envelope = exp(-t * 10)
             let wave = sin(1000 * 2 * .pi * t) * envelope
             
-            channelData[0][frame] = wave * 0.4
-            channelData[1][frame] = wave * 0.4
+            channelData[0][frame] = Float(wave * 0.4)
+            channelData[1][frame] = Float(wave * 0.4)
         }
         
         return buffer
@@ -343,8 +344,8 @@ class AudioManager {
             let envelope = exp(-t * 25)
             let wave = sin(600 * 2 * .pi * t) * envelope
             
-            channelData[0][frame] = wave * 0.3
-            channelData[1][frame] = wave * 0.3
+            channelData[0][frame] = Float(wave * 0.3)
+            channelData[1][frame] = Float(wave * 0.3)
         }
         
         return buffer
@@ -370,8 +371,8 @@ class AudioManager {
             let wave2 = sin(1000 * 2 * .pi * t) * envelope * 0.7
             let wave = wave1 + wave2
             
-            channelData[0][frame] = wave * 0.4
-            channelData[1][frame] = wave * 0.4
+            channelData[0][frame] = Float(wave * 0.4)
+            channelData[1][frame] = Float(wave * 0.4)
         }
         
         return buffer
